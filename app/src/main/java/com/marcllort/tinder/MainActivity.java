@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -13,63 +12,70 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 
 
-
-
 public class MainActivity extends Activity {
 
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
+    private ArrayAdapter<String> arrayAdapter;                                                              // Adaptador de infromació a targetes
     private int i;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setData();                                                                                          // Posem informació dins el ArrayList data
 
-        al = new ArrayList<>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-        al.add("html");
-        al.add("c++");
-        al.add("css");
-        al.add("javascript");
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.dataText, data);                // Adaptem el arraylist a el format necessari per les targetes
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
+        createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
 
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+    }
 
-        flingContainer.setAdapter(arrayAdapter);
-        flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+
+    private void setData() {
+
+        data = new ArrayList<>();
+
+        data.add("php");
+        data.add("c");
+        data.add("python");
+        data.add("java");
+        data.add("html");
+        data.add("c++");
+        data.add("css");
+        data.add("javascript");
+
+    }
+
+    private void createCards() {
+        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);            // Busquem el frame (on apareixen les diferents targetes)
+
+        flingContainer.setAdapter(arrayAdapter);                                                            // Posem al frame les targetes que haura de mostrar
+
+        flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {                       // Listeners segons el que li fem a la targeta
             @Override
-            public void removeFirstObjectInAdapter() {
-                // this is the simplest way to delete an object from the Adapter (/AdapterView)
+            public void removeFirstObjectInAdapter() {                                                      // S'executa al fer el swipe a qualsevol lloc, demoment borra el objecte del array de info
                 Log.d("LIST", "removed object!");
-                al.remove(0);
+                data.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
+            public void onLeftCardExit(Object dataObject) {                                                 // Que fer al haber un left-swipe
                 makeToast(MainActivity.this, "Left!");
             }
 
             @Override
-            public void onRightCardExit(Object dataObject) {
+            public void onRightCardExit(Object dataObject) {                                                // Que fer al haber un right-swipe
                 makeToast(MainActivity.this, "Right!");
             }
 
             @Override
-            public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
+            public void onAdapterAboutToEmpty(int itemsInAdapter) {                                         // Que fer quan està apunt d'acabar-se el array de informació
+                // Demanarem per més informació aqui
+                data.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 i++;
@@ -79,22 +85,20 @@ public class MainActivity extends Activity {
             public void onScroll(float scrollProgressPercent) {
 
             }
-        });
 
+        });                 // Listeners per quan fem algun tipus de swipe
 
-        // Optionally add an OnItemClickListener
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
-            public void onItemClicked(int itemPosition, Object dataObject) {
+            public void onItemClicked(int itemPosition, Object dataObject) {          // Listener per quan clickem la targeta
                 makeToast(MainActivity.this, "Clicked!");
             }
         });
-
     }
 
-    static void makeToast(Context ctx, String s){
+
+    static void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
-
 
 }
