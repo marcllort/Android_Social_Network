@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -16,6 +18,9 @@ public class MainActivity extends Activity {
 
     private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
     private ArrayAdapter<String> arrayAdapter;                                                              // Adaptador de infromació a targetes
+    private SwipeFlingAdapterView flingContainer;
+    private Button leftBtn;
+    private Button rightBtn;
     private int i;
 
 
@@ -30,6 +35,8 @@ public class MainActivity extends Activity {
         arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.dataText, data);                // Adaptem el arraylist a el format necessari per les targetes
 
         createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
+
+        buttonsSetup();
 
     }
 
@@ -50,7 +57,7 @@ public class MainActivity extends Activity {
     }
 
     private void createCards() {
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);            // Busquem el frame (on apareixen les diferents targetes)
+        flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);            // Busquem el frame (on apareixen les diferents targetes)
 
         flingContainer.setAdapter(arrayAdapter);                                                            // Posem al frame les targetes que haura de mostrar
 
@@ -96,9 +103,28 @@ public class MainActivity extends Activity {
         });
     }
 
+    private void buttonsSetup(){
+        rightBtn = findViewById(R.id.right);
+        rightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectRight();
+            }
+        });
+
+
+        leftBtn = findViewById(R.id.left);
+        leftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectLeft();
+            }
+        });
+    }
 
     static void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
+
 
 }
