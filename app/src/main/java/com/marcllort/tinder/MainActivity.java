@@ -2,6 +2,7 @@ package com.marcllort.tinder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ public class MainActivity extends Activity {
     private SwipeFlingAdapterView flingContainer;
     private Button leftBtn;
     private Button rightBtn;
+    private Button profileBtn;
+    private Button matchesBtn;
     private int i;
 
 
@@ -103,7 +106,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void buttonsSetup(){
+    private void buttonsSetup() {
         rightBtn = findViewById(R.id.right);
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +123,26 @@ public class MainActivity extends Activity {
                 flingContainer.getTopCardListener().selectLeft();
             }
         });
+
+        profileBtn = findViewById(R.id.btn_profile);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(profileIntent);
+            }
+        });
+
+        matchesBtn = findViewById(R.id.btn_matches);
+        matchesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent matchesIntent = new Intent(getApplicationContext(), MatchesActivity.class);
+                startActivity(matchesIntent);
+            }
+        });
+
+
     }
 
     static void makeToast(Context ctx, String s) {
