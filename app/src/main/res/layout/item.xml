@@ -47,7 +47,7 @@
                 android:layout_gravity="center_horizontal"
                 android:paddingLeft="20sp"
                 android:paddingBottom="20sp"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="30sp"
                 tools:text="hello" />
 

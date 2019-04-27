@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="30dp"
+    android:layout_marginTop="40dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,10 +13,6 @@
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal">
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"></Space>
 
         <ImageButton
             android:id="@+id/btn_profile"
@@ -33,8 +29,27 @@
             android:src="@drawable/ic_person" />
 
         <Space
-            android:layout_width="196dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"></Space>
+
+        <ImageButton
+            android:id="@+id/btn_main"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:onClick="LikeBtn"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_search_sel" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
             android:layout_weight="1"></Space>
 
         <ImageButton
@@ -51,11 +66,6 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_chat" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"></Space>
-
 
     </LinearLayout>
 
@@ -63,7 +73,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
