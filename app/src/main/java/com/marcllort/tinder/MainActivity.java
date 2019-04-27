@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -20,10 +21,10 @@ public class MainActivity extends Activity {
     private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
     private ArrayAdapter<String> arrayAdapter;                                                              // Adaptador de infromació a targetes
     private SwipeFlingAdapterView flingContainer;
-    private Button leftBtn;
-    private Button rightBtn;
-    private Button profileBtn;
-    private Button matchesBtn;
+    private ImageButton leftBtn;
+    private ImageButton rightBtn;
+    private ImageButton profileBtn;
+    private ImageButton matchesBtn;
     private int i;
 
 

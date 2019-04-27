@@ -10,55 +10,117 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal">
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"></Space>
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="goToSettings"
-            android:text="Profile" />
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:onClick="LikeBtn"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_person" />
 
-        <Button
-            android:id="@+id/btn_matches"
-            android:layout_width="wrap_content"
+        <Space
+            android:layout_width="196dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="goToMatches"
-            android:text="Matches" />
+            android:layout_weight="1"></Space>
+
+        <ImageButton
+            android:id="@+id/btn_matches"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:onClick="LikeBtn"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_chat" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"></Space>
+
 
     </LinearLayout>
 
-    <com.lorentzos.flingswipe.SwipeFlingAdapterView
-        android:id="@+id/frame"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="536dp"
-        app:rotation_degrees="15.5"
-        tools:context=".MyActivity" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.lorentzos.flingswipe.SwipeFlingAdapterView
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            app:rotation_degrees="15.5"
+            tools:context=".MyActivity" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-
-        android:gravity="end"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Left" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="30dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/round_button_with_border"
+            android:onClick="LikeBtn"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/dislike" />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Right" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="30dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/round_button_with_border"
+            android:onClick="LikeBtn"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/like" />
+
 
     </LinearLayout>
 
