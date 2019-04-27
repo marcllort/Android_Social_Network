@@ -1,68 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="30dp"
-    android:orientation="vertical"
-    android:padding="20sp">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30sp"
-        android:src="@mipmap/ic_launcher" />
-
-    <EditText
-        android:id="@+id/name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20sp"
-        android:background="@null"
-        android:hint="Name" />
-
-    <EditText
-        android:id="@+id/birth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20sp"
-        android:background="@null"
-        android:clickable="true"
-        android:editable="false"
-        android:focusable="false"
-        android:hint="Birth date" />
-
-    <EditText
-        android:id="@+id/aboutme"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:inputType="text|textMultiLine"
-        android:layout_marginBottom="20sp"
-        android:gravity="top"
-        android:background="@null"
-        android:hint="About me" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
-    <Button
-        android:id="@+id/btn_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="confirm" />
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="Click to change profile photo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
 
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="back" />
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Victoria, 19"
+            android:textColor="@color/textColor"
+            android:textSize="25sp" />
 
-    <Button
-        android:id="@+id/btn_signout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="logoutUser"
-        android:text="SignOut" />
+        <TextView
+            android:id="@+id/txt_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:drawableLeft="@drawable/ic_location"
+            android:gravity="center"
+            android:text="5 miles away"
+            android:textSize="18sp" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_grey"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="Bio:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/et_aboutme"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="20sp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="About me"
+            android:inputType="text|textMultiLine"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_grey"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="Interests:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/et_interests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="X,Y,Z"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -14,5 +14,11 @@
     <string name="confirm_hint">Confirm Password</string>
     <string name="already_registered_text">Already have an account?</string>
 
+    <string-array name="parts_array">
+        <item> Male </item>
+        <item> Female </item>
+        <item> Other </item>
+    </string-array>
+
 
 </resources>

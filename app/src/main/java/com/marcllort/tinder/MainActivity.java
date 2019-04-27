@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
         profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent profileIntent = new Intent(getApplicationContext(), MyProfileActivity.class);
                 startActivity(profileIntent);
             }
         });

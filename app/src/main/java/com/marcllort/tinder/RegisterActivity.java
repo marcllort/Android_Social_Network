@@ -1,6 +1,7 @@
 package com.marcllort.tinder;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
@@ -33,6 +34,9 @@ public class RegisterActivity extends Activity {
                 Toast.makeText(RegisterActivity.this, "Click Register! Camp password: " + textPassword.getText().toString() + " Camp rePassword: " + textRePassword.getText().toString(), Toast.LENGTH_SHORT).show();
                 // Si es registra correctament, anem a la pantalla de login
                 finish();
+
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
+                startActivity(profileIntent);
             }
         });
 

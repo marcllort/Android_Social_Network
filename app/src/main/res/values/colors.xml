@@ -23,6 +23,16 @@
     <color name="rosa2">#FF1E6A</color>
     <color name="blanc">#F0E3E8</color>
 
+    <color name="transparentPink">#99FF4081</color>
+
+    <color name="grey">#bfbfbf</color>
+    <color name="link_blue">#1781DB</color>
+    <color name="light_grey">#eeeeee</color>
+    <color name="textColor">#111111</color>
+
+    <color name="likegreen">#00CC33</color>
+    <color name="dislikered">#FF2400</color>
+
 
     <color name="color_log_in">#94019c8f</color>
     <color name="color_sign_up">#93303f9f</color>

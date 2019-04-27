@@ -3,31 +3,60 @@ package com.marcllort.tinder;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ProfileActivity extends Activity {
+
+public class ProfileCreateActivity extends Activity {
 
     private EditText dateText;
-    private Calendar myCalendar = Calendar.getInstance(Locale.US);
+    private EditText mapText;
+    private FloatingActionButton saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_create_profile);
 
         dateSelector();
-
+        saveButton();
 
     }
 
-    private void dateSelector() {
+    private void saveButton() {
+
+        saveButton = findViewById(R.id.btn_save);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+    private void mapSelector() {
+        mapText = findViewById(R.id.et_location);
+        mapText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+    }
+
+    private void dateSelector() {                                                                           // Selector de data amb datepicker, i posteriorment la adapta a un edittext
+        final Calendar myCalendar = Calendar.getInstance(Locale.US);
         dateText = (EditText) findViewById(R.id.birth);
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -50,13 +79,12 @@ public class ProfileActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(ProfileActivity.this, date, myCalendar
+                System.out.println("nadfklsaffsafas");
+                new DatePickerDialog(ProfileCreateActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
     }
-
 
 }
