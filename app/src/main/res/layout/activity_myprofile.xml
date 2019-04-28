@@ -52,7 +52,7 @@
                 android:clickable="true"
                 android:editable="false"
                 android:focusable="false"
-                android:hint="Barcelona"
+                android:hint="Click to update location"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp" />
