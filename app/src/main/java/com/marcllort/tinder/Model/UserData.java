@@ -1,4 +1,4 @@
-package com.marcllort.tinder.API;
+package com.marcllort.tinder.Model;
 
 public class UserData {
 
