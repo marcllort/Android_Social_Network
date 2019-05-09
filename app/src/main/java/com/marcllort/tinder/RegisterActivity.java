@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RegisterActivity extends Activity {
+import com.marcllort.tinder.API.RestAPICallBack;
+import com.marcllort.tinder.API.UserToken;
+
+public class RegisterActivity extends Activity implements RestAPICallBack {
 
     private TextInputEditText textMail;
     private TextInputEditText textPassword;
@@ -51,4 +54,18 @@ public class RegisterActivity extends Activity {
     }
 
 
+    @Override
+    public void onLoginSuccess(UserToken userToken) {
+
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+
+    }
 }

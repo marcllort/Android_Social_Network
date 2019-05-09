@@ -21,4 +21,24 @@
     </string-array>
 
 
+
+    <!-- Login Activity -->
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="register_text">No account yet? Create one</string>
+
+    <string name="error_username">Invalid username</string>
+    <string name="error_pass">Password must be between 4 and 10 alphanumeric characters</string>
+
+
+    <!-- Register Activity -->
+    <string name="hint_user">Username</string>
+    <string name="hint_mail">Mail</string>
+    <string name="hint_repassword">Re-enter password</string>
+    <string name="login_text">Already a member? Login</string>
+    <string name="error_user">Username is empty</string>
+    <string name="error_mail">Mail is empty</string>
+    <string name="error_repass">Passwords do not match</string>
+
+
 </resources>

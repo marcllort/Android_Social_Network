@@ -62,7 +62,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 System.out.println("Location: " + location.getLongitude() + " " + location.getLatitude());
 
-                String cityName=null;
+                String cityName = null;
                 Geocoder gcd = new Geocoder(getBaseContext(),
                         Locale.getDefault());
                 List<Address> addresses;
@@ -71,7 +71,7 @@ public class MyProfileActivity extends AppCompatActivity {
                             .getLongitude(), 1);
                     if (addresses.size() > 0)
                         System.out.println(addresses.get(0).getLocality());
-                    cityName=addresses.get(0).getLocality();
+                    cityName = addresses.get(0).getLocality();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,13 +119,12 @@ public class MyProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {                         // Posem imatge a la imageView
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             profileImage.setImageURI(resultUri);
         }
     }
-
 
 
     @Override
@@ -141,7 +140,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     void configure_button() {
-        // first check for permissions
+        // Mirem permisos
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -152,14 +151,12 @@ public class MyProfileActivity extends AppCompatActivity {
             }
             return;
         }
-        // this code won'textView execute IF permissions are not allowed, because in the line above there is return statement.
-        et_location= findViewById(R.id.et_location);
+
+        et_location = findViewById(R.id.et_location);
         et_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //noinspection MissingPermission
-                locationManager.requestLocationUpdates("gps", 5000, 0, listener);
-
+                locationManager.requestLocationUpdates("gps", 10000, 0, listener);       // Podem canviar el temps de update
 
 
             }

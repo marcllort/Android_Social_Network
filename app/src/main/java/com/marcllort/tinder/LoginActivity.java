@@ -1,14 +1,21 @@
 package com.marcllort.tinder;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+import com.marcllort.tinder.API.RestAPICallBack;
+import com.marcllort.tinder.API.RestAPIManager;
+import com.marcllort.tinder.API.UserToken;
+
+public class LoginActivity extends Activity implements RestAPICallBack {
 
     private TextInputEditText textMail;
     private TextInputEditText textPassword;
@@ -29,11 +36,9 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Click login! Camp login: " + textMail.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Click login! Camp login: " + textMail.getText().toString() + " Pass: " + textPassword.getText().toString(), Toast.LENGTH_SHORT).show();
                 // Si login correcte, anem a main activity
-                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(mainIntent);
-                finish();
+                attemptLogin();
             }
         });
 
@@ -51,4 +56,84 @@ public class LoginActivity extends Activity {
 
     }
 
+
+    private void attemptLogin() {
+        // Reset errors.
+        textMail.setError(null);
+        textPassword.setError(null);
+
+        // Store values at the time of the login attempt.
+        String username = textMail.getText().toString();
+        String password = textPassword.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            textPassword.setError(getString(R.string.error_pass));
+            focusView = textPassword;
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(username)) {
+            textMail.setError(getString(R.string.error_username));
+            focusView = textMail;
+            cancel = true;
+        } else if (!isEmailValid(username)) {
+            textMail.setError(getString(R.string.error_username));
+            focusView = textMail;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            RestAPIManager.getInstance().getUserToken(username, password, this);
+
+        }
+    }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.length() > 2;
+    }
+
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 3;
+    }
+
+    @Override
+    public void onLoginSuccess(UserToken userToken) {
+        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+        // No passara mai
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        new AlertDialog.Builder(this)
+                .setTitle("Login Error")
+                .setMessage(t.getMessage())
+
+
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                    }
+                })
+
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 }
