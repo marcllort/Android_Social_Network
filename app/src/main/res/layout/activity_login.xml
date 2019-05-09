@@ -30,7 +30,7 @@
             android:id="@+id/email_input_edit"
             style="@style/Widget.TextEdit"
             android:layout_width="330dp"
-            android:hint="@string/email_hint"
+            android:hint="@string/hint_user"
             android:inputType="textEmailAddress" />
     </android.support.design.widget.TextInputLayout>
 
