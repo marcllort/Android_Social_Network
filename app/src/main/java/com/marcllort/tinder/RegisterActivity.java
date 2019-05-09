@@ -56,7 +56,7 @@ public class RegisterActivity extends Activity implements RestAPICallBack {
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
-
+        // No passara mai
     }
 
     @Override
