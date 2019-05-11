@@ -1,19 +1,24 @@
 package com.marcllort.tinder;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marcllort.tinder.API.RestAPICallBack;
+import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserToken;
 
 public class RegisterActivity extends Activity implements RestAPICallBack {
 
+    private TextInputEditText textUser;
     private TextInputEditText textMail;
     private TextInputEditText textPassword;
     private TextInputEditText textRePassword;
@@ -26,6 +31,7 @@ public class RegisterActivity extends Activity implements RestAPICallBack {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        textUser = findViewById(R.id.user_input_edit);
         textMail = findViewById(R.id.email_input_edit);
         textPassword = findViewById(R.id.password_input_edit);
         textRePassword = findViewById(R.id.repassword_input_edit);
@@ -36,10 +42,25 @@ public class RegisterActivity extends Activity implements RestAPICallBack {
             public void onClick(View v) {
                 Toast.makeText(RegisterActivity.this, "Click Register! Camp password: " + textPassword.getText().toString() + " Camp rePassword: " + textRePassword.getText().toString(), Toast.LENGTH_SHORT).show();
                 // Si es registra correctament, anem a la pantalla de login
-                finish();
+                if (validate()){
+                    String username = textUser.getText().toString();
+                    String email = textMail.getText().toString();
+                    String password = textPassword.getText().toString();
+                    String repassword = textRePassword.getText().toString();
 
-                Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
-                startActivity(profileIntent);
+                    // Implemetan el register AQUI
+                    RestAPIManager.getInstance().register(username, email, password, RegisterActivity.this);
+
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    // On complete call either onLoginSuccess or onLoginFailed
+                                    // onLoginFailed();
+
+                                }
+                            }, 3000);
+                }
+
             }
         });
 
@@ -53,6 +74,41 @@ public class RegisterActivity extends Activity implements RestAPICallBack {
 
     }
 
+    public boolean validate() {
+        boolean valid = true;
+
+        String user = textUser.getText().toString();
+        String email = textMail.getText().toString();
+        String password = textPassword.getText().toString();
+        String repassword = textRePassword.getText().toString();
+
+        if (user.isEmpty()) {
+            textUser.setError(getText(R.string.error_user));
+            valid = false;
+        }
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            textMail.setError(getText(R.string.error_mail));
+            valid = false;
+        } else {
+            textPassword.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+            textPassword.setError(getText(R.string.error_pass));
+            valid = false;
+        } else {
+            textPassword.setError(null);
+        }
+
+        if (repassword.isEmpty() || !repassword.equals(password)) {
+            textRePassword.setError(getText(R.string.error_repass));
+            valid = false;
+        }
+
+        return valid;
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -61,11 +117,28 @@ public class RegisterActivity extends Activity implements RestAPICallBack {
 
     @Override
     public void onRegisterSuccess() {
-
+        Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
+        startActivity(profileIntent);
+        finish();
     }
 
     @Override
     public void onFailure(Throwable t) {
+        new AlertDialog.Builder(this)
+                .setTitle("Register Error")
+                .setMessage(t.getMessage())
 
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

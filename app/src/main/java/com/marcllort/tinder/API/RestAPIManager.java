@@ -1,6 +1,8 @@
 package com.marcllort.tinder.API;
 
 
+import com.marcllort.tinder.Model.UserData;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -9,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestAPIManager {
 
-    private static final String BASE_URL = "http://android.byted.xyz/";
+    private static final String BASE_URL = "http://android2.byted.xyz/";
     private static RestAPIManager ourInstance;
     private Retrofit retrofit;
     private RestAPIService restApiService;
@@ -56,7 +58,7 @@ public class RestAPIManager {
         });
     }
 
-    public synchronized void register(String username, String email, String password, final RestAPICallBack registerCallback) {
+    public synchronized void register(String username, String email, String password, final RestAPICallBack restAPICallBack) {
         UserData userData = new UserData(username, email, password);
         Call<Void> call = restApiService.register(userData);
 
@@ -65,15 +67,15 @@ public class RestAPIManager {
             public void onResponse(Call<Void> call, Response<Void> response) {
 
                 if (response.isSuccessful()) {
-                    registerCallback.onRegisterSuccess();
+                    restAPICallBack.onRegisterSuccess();
                 } else {
-                    registerCallback.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                    restAPICallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                registerCallback.onFailure(t);
+                restAPICallBack.onFailure(t);
             }
         });
     }
