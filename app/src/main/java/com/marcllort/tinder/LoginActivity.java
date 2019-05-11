@@ -11,11 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.marcllort.tinder.API.RestAPICallBack;
+import com.marcllort.tinder.API.LoginCallBack;
+import com.marcllort.tinder.API.RegisterCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserToken;
 
-public class LoginActivity extends Activity implements RestAPICallBack {
+public class LoginActivity extends Activity implements LoginCallBack {
 
     private TextInputEditText textMail;
     private TextInputEditText textPassword;
@@ -115,11 +116,6 @@ public class LoginActivity extends Activity implements RestAPICallBack {
     }
 
     @Override
-    public void onRegisterSuccess() {
-        // No passara mai
-    }
-
-    @Override
     public void onFailure(Throwable t) {
         new AlertDialog.Builder(this)
                 .setTitle("Login Error")
@@ -136,4 +132,6 @@ public class LoginActivity extends Activity implements RestAPICallBack {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
+
 }

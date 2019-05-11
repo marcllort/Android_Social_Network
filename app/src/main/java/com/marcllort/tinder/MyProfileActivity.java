@@ -2,8 +2,11 @@ package com.marcllort.tinder;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -17,23 +20,40 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.marcllort.tinder.API.ProfileCallBack;
+import com.marcllort.tinder.API.RestAPIManager;
+import com.marcllort.tinder.Model.MyProfile;
+import com.marcllort.tinder.Model.User;
+import com.squareup.picasso.Picasso;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
 
-public class MyProfileActivity extends AppCompatActivity {
+public class MyProfileActivity extends AppCompatActivity implements ProfileCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
     private EditText et_location;
+    private EditText bio;
+    private EditText interests;
+    private TextView name;
     private Uri resultUri;
     private LocationManager locationManager;
     private LocationListener listener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +65,10 @@ public class MyProfileActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         saveButton();
+
+        name = (TextView) findViewById(R.id.txt_name);
+        bio = (EditText) findViewById(R.id.et_aboutme);
+        interests = (EditText) findViewById(R.id.et_interests);
 
         profileImage = findViewById(R.id.profileImage);
         profileImage.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +123,7 @@ public class MyProfileActivity extends AppCompatActivity {
         };
 
         configure_button();
-
+        refreshProfile();
 
     }
 
@@ -109,7 +133,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {           //enviar los nuevos datos al backend
 
             }
         });
@@ -125,6 +149,8 @@ public class MyProfileActivity extends AppCompatActivity {
             profileImage.setImageURI(resultUri);
         }
     }
+
+
 
 
     @Override
@@ -156,11 +182,38 @@ public class MyProfileActivity extends AppCompatActivity {
         et_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationManager.requestLocationUpdates("gps", 10000, 0, listener);       // Podem canviar el temps de update
+                locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
 
 
             }
         });
+    }
+
+    private void refreshProfile() {
+        RestAPIManager.getInstance().getMyProfile(this);
+    }
+
+    @Override
+    public void onGetMyProfile(MyProfile myProfile) {
+        MyProfile perfil = myProfile;
+        name.setText(perfil.getDisplayName());
+        bio.setText(perfil.getAboutMe());
+        interests.setText(perfil.getFilterPreferences());
+
+    }
+
+    @Override
+    public void onUpdateProfile(MyProfile myProfile) {
+        new AlertDialog.Builder(this)
+                .setTitle("Changes added")
+                .setMessage("Changes to your profile were added successfully.")
+                .show();
+
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        System.out.println(t.getMessage());
     }
 
 }

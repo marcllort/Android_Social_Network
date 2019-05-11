@@ -9,6 +9,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 
+import com.marcllort.tinder.API.RegisterCallBack;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -86,5 +88,7 @@ public class ProfileCreateActivity extends Activity {
             }
         });
     }
+
+
 
 }

@@ -1,7 +1,7 @@
 package com.marcllort.tinder.API;
 
-public interface RestAPICallBack {
+public interface LoginCallBack {
+
     void onLoginSuccess(UserToken userToken);
-    void onRegisterSuccess();
     void onFailure(Throwable t);
 }
