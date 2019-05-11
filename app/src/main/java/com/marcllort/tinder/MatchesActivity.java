@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 public class MatchesActivity extends Activity {
 
+
     private ImageButton profileBtn;
     private ImageButton mainBtn;
     private ListView matchList;
