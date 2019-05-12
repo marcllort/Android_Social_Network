@@ -1,6 +1,8 @@
 package com.marcllort.tinder.API;
 
 
+import android.provider.ContactsContract;
+
 import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.UserData;
 
@@ -12,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestAPIManager {
 
-    private static final String BASE_URL = "http://android.byted.xyz/";
+    private static final String BASE_URL = "http://android2.byted.xyz/";
     private static RestAPIManager ourInstance;
     private Retrofit retrofit;
     private RestAPIService restApiService;
@@ -46,6 +48,7 @@ public class RestAPIManager {
 
                 if (response.isSuccessful()) {
                     userToken = response.body();
+                    System.out.println("jjnj");
                     loginCallBack.onLoginSuccess(userToken);
                 } else {
                     loginCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
@@ -105,16 +108,39 @@ public class RestAPIManager {
         });
     }
 
-    public synchronized void updateMyProfile(MyProfile myProfile, final ProfileCallBack profileCallBack) {
-        MyProfile perfil = myProfile;
-        Call<MyProfile> call = restApiService.updateCurrentProfile(perfil,"Bearer " + userToken.getIdToken());
+
+    public synchronized void getMyProfile(final ProfileCallBack profileCallBack) {
+
+        Call<MyProfile> call = restApiService.getMyProfile("Bearer "+ userToken.getIdToken());
 
         call.enqueue(new Callback<MyProfile>() {
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
-
                 if(response.isSuccessful()) {
-                    profileCallBack.onUpdateMyProfile(response.body());
+                    profileCallBack.onGetProfile(response.body());
+                }
+                else {
+                    profileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyProfile> call, Throwable t) {
+                profileCallBack.onFailure(t);
+            }
+        });
+    }
+
+
+    public synchronized void updateProfile(final MyProfile profile, final ProfileCallBack profileCallBack) {
+        final MyProfile newUserProfile = profile;
+        Call<MyProfile> call = restApiService.updateMyProfile(profile, "Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<MyProfile>() {
+            @Override
+            public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
+                if(response.isSuccessful()) {
+                    profileCallBack.onUpdateProfile(newUserProfile);
                 }
                 else {
                     profileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));

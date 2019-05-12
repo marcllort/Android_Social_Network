@@ -79,6 +79,8 @@ public class MyProfile {
     @Expose
     private Integer weight;
 
+    public MyProfile(String aboutMe, String filterPreferences, String displayName) { this.aboutMe = aboutMe; this.filterPreferences = filterPreferences; this.displayName = displayName;}
+
     public String getAboutMe() {
         return aboutMe;
     }

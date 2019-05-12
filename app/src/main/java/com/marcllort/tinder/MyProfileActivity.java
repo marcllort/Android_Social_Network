@@ -20,11 +20,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
@@ -42,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MyProfileActivity extends AppCompatActivity implements ProfileCallBack {
+public class MyProfileActivity extends  AppCompatActivity implements ProfileCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
@@ -53,6 +56,8 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
     private Uri resultUri;
     private LocationManager locationManager;
     private LocationListener listener;
+    private boolean bioChanged = false, interestsChanged = false, nameChanged = false;
+    private boolean actualized = false;
 
 
     @Override
@@ -66,9 +71,11 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
 
         saveButton();
 
-        name = (TextView) findViewById(R.id.txt_name);
+
         bio = (EditText) findViewById(R.id.et_aboutme);
         interests = (EditText) findViewById(R.id.et_interests);
+        name = (TextView) findViewById(R.id.txt_name);
+
 
         profileImage = findViewById(R.id.profileImage);
         profileImage.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +86,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
                 startActivityForResult(intent, 1);
             }
         });
+
 
 
         listener = new LocationListener() {
@@ -122,9 +130,92 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
             }
         };
 
-        configure_button();
-        refreshProfile();
 
+
+        configure_button();
+        setData();
+
+        System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
+
+        bio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                bioChanged = true;
+
+            }
+        });
+
+        interests.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                interestsChanged =true;
+            }
+        });
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                nameChanged = true;
+            }
+        });
+
+        System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
+
+    }
+
+    void setData() {
+        if(!actualized) {
+            RestAPIManager.getInstance().getMyProfile(this);
+            bioChanged = false;
+            interestsChanged = false;
+            nameChanged = false;
+            actualized = true;
+        }
+    }
+
+    @Override
+    public synchronized void onGetProfile(MyProfile myProfile) {
+
+        MyProfile profile = myProfile;
+
+        bio.setText(profile.getAboutMe());
+        interests.setText(profile.getFilterPreferences());
+        name.setText(profile.getDisplayName());
+
+    }
+
+    @Override
+    public void onFailure(Throwable t){
     }
 
     private void saveButton() {
@@ -134,7 +225,8 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {           //enviar los nuevos datos al backend
-
+                System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
+                attemptSaveProfile();
             }
         });
 
@@ -147,6 +239,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             profileImage.setImageURI(resultUri);
+
         }
     }
 
@@ -189,31 +282,36 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         });
     }
 
-    private void refreshProfile() {
-        RestAPIManager.getInstance().getMyProfile(this);
-    }
-
-    @Override
-    public void onGetMyProfile(MyProfile myProfile) {
-        MyProfile perfil = myProfile;
-        name.setText(perfil.getDisplayName());
-        bio.setText(perfil.getAboutMe());
-        interests.setText(perfil.getFilterPreferences());
-
-    }
-
-    @Override
-    public void onUpdateProfile(MyProfile myProfile) {
-        new AlertDialog.Builder(this)
-                .setTitle("Changes added")
-                .setMessage("Changes to your profile were added successfully.")
-                .show();
+    public void attemptSaveProfile() {
+        if(!bioChanged && !nameChanged && !interestsChanged) {
+            Toast.makeText(getBaseContext(), "No changes found", Toast.LENGTH_LONG).show();
+            Intent profileIntent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(profileIntent);
+        }
+        else {
+            MyProfile newProfile = new MyProfile(bio.getText().toString(), interests.getText().toString(), name.getText().toString());
+            RestAPIManager.getInstance().updateProfile(newProfile, this);
+        }
 
     }
 
     @Override
-    public void onFailure(Throwable t) {
-        System.out.println(t.getMessage());
+    public synchronized void onUpdateProfile(MyProfile newProfile) {
+        MyProfile profile = newProfile;
+
+        bio.setText(profile.getAboutMe());
+        interests.setText(profile.getFilterPreferences());
+        name.setText(profile.getDisplayName());
+
+        Toast.makeText(getBaseContext(), "Profile Updated!", Toast.LENGTH_LONG).show();
+        Intent profileIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(profileIntent);
+
+        bioChanged = false;
+        interestsChanged = false;
+        nameChanged = false;
+
     }
+
 
 }

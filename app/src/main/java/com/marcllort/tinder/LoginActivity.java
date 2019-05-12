@@ -110,6 +110,7 @@ public class LoginActivity extends Activity implements LoginCallBack {
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
+        System.out.println("exuste");
         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mainIntent);
         finish();

@@ -20,19 +20,13 @@ public interface RestAPIService {
     @POST("/api/register")
     Call<Void> register(@Body UserData userData);
 
-    @GET("/api/profiles/{id}")
-    Call<MyProfile> getProfileById(@Path("id") Integer id, @Header("Autorization") String token);
-
     @POST("/api/profiles")
-    Call<MyProfile> createProfile(@Body MyProfile myProfile, @Header("Autorization") String token);
-
-    @PUT("/api/my-profile")
-    Call<MyProfile> updateCurrentProfile(@Body MyProfile myProfile, @Header("Autorization") String token);
-
-    @PUT("/api/profiles")
-    Call<MyProfile> updateProfile(@Body MyProfile myProfile, @Header("Autorization") String token);
+    Call<MyProfile> createProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
 
     @GET("/api/my-profile")
-    Call<MyProfile> getProfile(@Header("Authorization") String token);
+    Call<MyProfile> getMyProfile(@Header("Authorization") String token);
+
+    @PUT("api/my-profile")
+    Call<MyProfile> updateMyProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
 
 }
