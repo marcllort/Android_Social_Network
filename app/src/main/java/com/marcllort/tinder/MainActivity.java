@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
     private ImageButton rightBtn;
     private ImageButton profileBtn;
     private ImageButton matchesBtn;
+    private ImageButton btn_main;
     private int i;
 
 
@@ -141,7 +142,14 @@ public class MainActivity extends Activity {
                 startActivity(matchesIntent);
             }
         });
-
+        btn_main = findViewById(R.id.btn_main);
+        btn_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent matchesIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(matchesIntent);
+            }
+        });
 
     }
 

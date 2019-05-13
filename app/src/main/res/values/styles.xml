@@ -46,6 +46,21 @@
         <item name="android:textColor">@color/color_text</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Widget.TextInputRed" >
+        <item name="android:layout_height">@dimen/wrap_content</item>
+        <item name="android:layout_width">@dimen/input_width</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
 
+    <style name="Widget.TextEditRed">
+        <item name="android:layout_height">@dimen/match_parent</item>
+        <item name="android:layout_width">@dimen/match_parent</item>
+        <item name="android:textColorHighlight">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/state</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:padding">@dimen/text_padding</item>
+    </style>
 
 </resources>
