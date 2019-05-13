@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,9 @@ import com.squareup.picasso.Picasso;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -84,6 +88,11 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                Bitmap bmp = profileImage.getDrawingCache();
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);*/
             }
         });
 
@@ -196,10 +205,9 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     void setData() {
         if(!actualized) {
             RestAPIManager.getInstance().getMyProfile(this);
-            bioChanged = false;
-            interestsChanged = false;
-            nameChanged = false;
-            actualized = true;
+
+
+
         }
     }
 
@@ -211,6 +219,10 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         bio.setText(profile.getAboutMe());
         interests.setText(profile.getFilterPreferences());
         name.setText(profile.getDisplayName());
+        nameChanged = false;
+
+        bioChanged = false;
+        interestsChanged = false;
 
     }
 
@@ -232,16 +244,27 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
 
     }
 
-    @Override
+  /*  @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {                         // Posem imatge a la imageView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             profileImage.setImageURI(resultUri);
+            profileImage.buildDrawingCache();
+            Bitmap bmap = profileImage.getDrawingCache();
+
+            ByteArrayOutputStream stream=new ByteArrayOutputStream();
+            bmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            byte[] image=stream.toByteArray();
+            System.out.println("byte array:"+image);
+
+            String img_str = Base64.encodeToString(image, 0);
+            System.out.println("string:"+img_str);
+            bio.setText(img_str);
 
         }
-    }
+    }*/
 
 
 
@@ -312,6 +335,40 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         nameChanged = false;
 
     }
+
+
+
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
+        System.out.println(imgDecodableString);
+        return imgDecodableString;
+
+    }
+
+/*public static Bitmap decodeBase64(String input) {
+        byte[] decodedBytes = Base64.decode(input.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        }
+    private String encodeImages(String path) {
+        File imagefile = new File(path);
+        FileInputStream fis = null;
+        try{
+        fis = new FileInputStream(imagefile);
+        }catch(FileNotFoundException e){
+        e.printStackTrace();
+        }
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
+        //Base64.de
+        return imgDecodableString;
+    }*/
 
 
 }
