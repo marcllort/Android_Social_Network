@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserCallBack;
@@ -71,6 +74,14 @@ public class SearchActivity extends Activity implements UserCallBack {
 
         adapter = new ArrayAdapter(this,R.layout.activity_searchlayout,names);
         matchList.setAdapter(adapter);
+        matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(SearchActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
+                startActivity(profileIntent);
+            }
+        });
         filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -105,6 +116,8 @@ public class SearchActivity extends Activity implements UserCallBack {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
+
     private void topBarSetup() {
 
         profileBtn = findViewById(R.id.btn_profile);
