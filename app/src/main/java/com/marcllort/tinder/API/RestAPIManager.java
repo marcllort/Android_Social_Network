@@ -48,7 +48,6 @@ public class RestAPIManager {
 
                 if (response.isSuccessful()) {
                     userToken = response.body();
-                    System.out.println("jjnj");
                     loginCallBack.onLoginSuccess(userToken);
                 } else {
                     loginCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
