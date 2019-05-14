@@ -1,3 +1,4 @@
+
 package com.marcllort.tinder;
 
 import android.Manifest;
@@ -34,7 +35,7 @@ import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.User;
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -97,7 +98,6 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         });
 
 
-
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -140,7 +140,6 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         };
 
 
-
         configure_button();
         setData();
 
@@ -177,7 +176,7 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
 
             @Override
             public void afterTextChanged(Editable s) {
-                interestsChanged =true;
+                interestsChanged = true;
             }
         });
 
@@ -203,9 +202,8 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     }
 
     void setData() {
-        if(!actualized) {
+        if (!actualized) {
             RestAPIManager.getInstance().getMyProfile(this);
-
 
 
         }
@@ -227,7 +225,7 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     }
 
     @Override
-    public void onFailure(Throwable t){
+    public void onFailure(Throwable t) {
     }
 
     private void saveButton() {
@@ -253,20 +251,15 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
             profileImage.setImageURI(resultUri);
             profileImage.buildDrawingCache();
             Bitmap bmap = profileImage.getDrawingCache();
-
             ByteArrayOutputStream stream=new ByteArrayOutputStream();
             bmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
             byte[] image=stream.toByteArray();
             System.out.println("byte array:"+image);
-
             String img_str = Base64.encodeToString(image, 0);
             System.out.println("string:"+img_str);
             bio.setText(img_str);
-
         }
     }*/
-
-
 
 
     @Override
@@ -306,12 +299,11 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     }
 
     public void attemptSaveProfile() {
-        if(!bioChanged && !nameChanged && !interestsChanged) {
+        if (!bioChanged && !nameChanged && !interestsChanged) {
             Toast.makeText(getBaseContext(), "No changes found", Toast.LENGTH_LONG).show();
             Intent profileIntent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(profileIntent);
-        }
-        else {
+        } else {
             MyProfile newProfile = new MyProfile(bio.getText().toString(), interests.getText().toString(), name.getText().toString());
             RestAPIManager.getInstance().updateProfile(newProfile, this);
         }
@@ -337,11 +329,9 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     }
 
 
-
-
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
         System.out.println(imgDecodableString);
