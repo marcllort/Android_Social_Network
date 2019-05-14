@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserCallBack;
 import com.marcllort.tinder.Model.User;
+import com.marcllort.tinder.Model.UserAdapter;
 
 import java.util.ArrayList;
 
@@ -28,15 +29,15 @@ public class SearchActivity extends Activity implements UserCallBack {
     private ImageButton mainBtn;
     private ListView matchList;
     private EditText filter ;
-    ArrayList<String> names;
-    ArrayAdapter<String> adapter;
+    ArrayList<User> names;
+    UserAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         names = new ArrayList<>();
         RestAPIManager.getInstance().getUsers( this);
-        names = new ArrayList<String>();
+        names = new ArrayList<User>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         matchList = findViewById(R.id.matchList);
@@ -66,18 +67,18 @@ public class SearchActivity extends Activity implements UserCallBack {
     public void onGetUsers(ArrayList <User > users){
        //Copiar el arraylist de users a names
         System.out.println(users.size() + "------------------------------------------------------------------------------");
-        //names = users;
-        for (User i : users){
+        names = users;
+        /*for (User i : users){
             System.out.println(i.getLogin());
             names.add(i.getLogin());
-        }
+        }*/
 
-        adapter = new ArrayAdapter(this,R.layout.activity_searchlayout,names);
+        adapter = new UserAdapter(this,R.layout.activity_searchlayout,names);
         matchList.setAdapter(adapter);
         matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(SearchActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SearchActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
                 Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
                 startActivity(profileIntent);
             }

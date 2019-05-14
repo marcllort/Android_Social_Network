@@ -150,4 +150,9 @@ public class User {
         this.login = login;
     }
 
+    public User(String name, String email, String langKey){
+        this.login = name;
+        this.email = email;
+        this.langKey = langKey;
+    }
 }
