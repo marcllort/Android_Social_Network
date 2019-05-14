@@ -4,6 +4,8 @@ package com.marcllort.tinder.API;
 import com.marcllort.tinder.Model.*;
 
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -153,11 +155,11 @@ public class RestAPIManager {
 
     public synchronized void getUsers(final UserCallBack userCallBack) {
 
-        Call<User> call = restApiService.getUsers("Bearer "+ userToken.getIdToken());
+        Call<ArrayList<User>> call = restApiService.getUsers("Bearer "+ userToken.getIdToken());
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<ArrayList<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
                 if(response.isSuccessful()) {
                     userCallBack.onGetUsers(response.body());
                 }
@@ -167,7 +169,7 @@ public class RestAPIManager {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
                 userCallBack.onFailure(t);
             }
         });

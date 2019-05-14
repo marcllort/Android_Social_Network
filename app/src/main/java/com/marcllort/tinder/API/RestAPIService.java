@@ -5,6 +5,8 @@ import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserData;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -30,5 +32,5 @@ public interface RestAPIService {
     Call<MyProfile> updateMyProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
 
     @GET("/api/users")
-    Call<User> getUsers(@Header("Authorization") String token);
+    Call<ArrayList<User>> getUsers(@Header("Authorization") String token);
 }
