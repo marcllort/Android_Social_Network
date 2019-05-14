@@ -2,6 +2,7 @@ package com.marcllort.tinder.API;
 
 
 import com.marcllort.tinder.Model.MyProfile;
+import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserData;
 
 import retrofit2.Call;
@@ -29,4 +30,6 @@ public interface RestAPIService {
     @PUT("api/my-profile")
     Call<MyProfile> updateMyProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
 
+    @PUT("api/users")
+    Call<User> getUser(@Header("Authorization") String token);
 }

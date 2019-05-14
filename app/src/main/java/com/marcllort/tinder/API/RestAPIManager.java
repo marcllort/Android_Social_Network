@@ -4,6 +4,7 @@ package com.marcllort.tinder.API;
 import android.provider.ContactsContract;
 
 import com.marcllort.tinder.Model.MyProfile;
+import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserData;
 
 import retrofit2.Call;
@@ -149,6 +150,28 @@ public class RestAPIManager {
             @Override
             public void onFailure(Call<MyProfile> call, Throwable t) {
                 profileCallBack.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void getUsers(final UserCallBack userCallBack) {
+
+        Call<User> call = restApiService.getUser("Bearer "+ userToken.getIdToken());
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+                    userCallBack.onGetUsers();
+                }
+                else {
+                    userCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure( Throwable t) {
+                userCallBack.onFailure(t);
             }
         });
     }
