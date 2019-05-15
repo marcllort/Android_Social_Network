@@ -185,7 +185,7 @@ public class RestAPIManager {
             @Override
             public void onResponse(Call<Invitation[]> call, Response<Invitation[]> response) {
                 if (response.isSuccessful()){
-                    invitationCallBack.onGetPendingInvites(response.body());
+                    invitationCallBack.onGetAllInvitations(response.body());
                 }else {
                     invitationCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
                 }
