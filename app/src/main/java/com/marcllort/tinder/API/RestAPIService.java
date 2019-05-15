@@ -1,11 +1,13 @@
 package com.marcllort.tinder.API;
 
 
+import com.marcllort.tinder.Model.Invitation;
 import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserData;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.QueryMap;
 
 public interface RestAPIService {
 
@@ -33,4 +36,10 @@ public interface RestAPIService {
 
     @GET("/api/users")
     Call<ArrayList<User>> getUsers(@Header("Authorization") String token);
+
+    @GET("/api/pending-invites")
+    Call<Invitation[]> getPendingInvites(@Header("Authorization") String token, @QueryMap Map<String, String> options);
+
+    @GET("/api/invitations")
+    Call<Invitation[]> getAllInvitations (@Header("Authorization") String token, @QueryMap Map<String, String> options);
 }

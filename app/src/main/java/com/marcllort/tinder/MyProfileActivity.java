@@ -89,11 +89,11 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
-                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 Bitmap bmp = profileImage.getDrawingCache();
                 bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
-                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);*/
+                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
             }
         });
 

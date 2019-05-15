@@ -11,14 +11,18 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.marcllort.tinder.API.InvitationCallBack;
+import com.marcllort.tinder.API.RestAPIManager;
+import com.marcllort.tinder.Model.Invitation;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements InvitationCallBack {
 
     private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
-    private ArrayAdapter<String> arrayAdapter;                                                              // Adaptador de infromació a targetes
+    private Invitation[] invitations;
+    private ArrayAdapter<Invitation> arrayAdapter;                                                              // Adaptador de infromació a targetes
     private SwipeFlingAdapterView flingContainer;
     private ImageButton leftBtn;
     private ImageButton rightBtn;
@@ -34,13 +38,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setData();                                                                                          // Posem informació dins el ArrayList data
+        //setData();                                                                                          // Posem informació dins el ArrayList data
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.dataText, data);                // Adaptem el arraylist a el format necessari per les targetes
-
-        createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
-
-        buttonsSetup();
+        RestAPIManager.getInstance().getAllInvitations(this);
 
     }
 
@@ -158,4 +158,24 @@ public class MainActivity extends Activity {
     }
 
 
+    @Override
+    public void onGetPendingInvites(Invitation[] invitations) {
+
+    }
+
+    @Override
+    public void onGetAllInvitations(Invitation[] invitations) {
+        this.invitations = invitations;
+
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.dataText, invitations);                // Adaptem el arraylist a el format necessari per les targetes
+
+        createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
+
+        buttonsSetup();
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+
+    }
 }

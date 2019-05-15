@@ -5,6 +5,7 @@ import com.marcllort.tinder.Model.*;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +38,8 @@ public class RestAPIManager {
         restApiService = retrofit.create(RestAPIService.class);
 
     }
+
+
 
     public synchronized void getUserToken(String username, String password, final LoginCallBack loginCallBack) {
         UserData userData = new UserData(username, password);
@@ -171,6 +174,26 @@ public class RestAPIManager {
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
                 userCallBack.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void getAllInvitations (final InvitationCallBack invitationCallBack){
+        Call<Invitation[]> call = restApiService.getPendingInvites("Bearer "+ userToken.getIdToken(), new HashMap<String, String>());
+
+        call.enqueue(new Callback<Invitation[]>() {
+            @Override
+            public void onResponse(Call<Invitation[]> call, Response<Invitation[]> response) {
+                if (response.isSuccessful()){
+                    invitationCallBack.onGetPendingInvites(response.body());
+                }else {
+                    invitationCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Invitation[]> call, Throwable t) {
+                invitationCallBack.onFailure(t);
             }
         });
     }
