@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 public interface RestAPIService {
@@ -31,8 +32,11 @@ public interface RestAPIService {
     @GET("/api/my-profile")
     Call<MyProfile> getMyProfile(@Header("Authorization") String token);
 
-    @PUT("api/my-profile")
+    @PUT("/api/my-profile")
     Call<MyProfile> updateMyProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
+
+    @GET("/api/users/{login}")
+    Call<User> getUser(@Path("login")String login, @Header("Authorization") String token);
 
     @GET("/api/users")
     Call<ArrayList<User>> getUsers(@Header("Authorization") String token);

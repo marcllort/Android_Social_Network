@@ -26,7 +26,7 @@
         <activity android:name=".ProfileCreateActivity" />
         <activity android:name=".MatchesActivity" />
         <activity android:name=".SearchActivity" />
-
+        <activity android:name=".ProfileActivity" />
 
 
     </application>

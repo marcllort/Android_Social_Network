@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marcllort.tinder.API.RestAPIManager;
@@ -66,7 +68,6 @@ public class SearchActivity extends Activity implements UserCallBack {
     @Override
     public void onGetUsers(ArrayList <User > users){
        //Copiar el arraylist de users a names
-        System.out.println(users.size() + "------------------------------------------------------------------------------");
         names = users;
         /*for (User i : users){
             System.out.println(i.getLogin());
@@ -75,14 +76,34 @@ public class SearchActivity extends Activity implements UserCallBack {
 
         adapter = new UserAdapter(this,R.layout.activity_searchlayout,names);
         matchList.setAdapter(adapter);
+
+
+
         matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(SearchActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
-                Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                String item = names.get(position).getLogin();
+
+                Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                System.out.println("-------- "+ id + "---------" + names.get(position).getLogin());
+
+                profileIntent.putExtra("login", names.get(position).getLogin());
                 startActivity(profileIntent);
             }
         });
+
+
+
+       /* matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(SearchActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
+
+            }
+        });*/
         filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

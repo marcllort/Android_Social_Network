@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements InvitationCallBack {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {                                         // Que fer quan està apunt d'acabar-se el array de informació
                 // Demanarem per més informació aqui
-                data.add("XML ".concat(String.valueOf(i)));
+//                data.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 i++;

@@ -134,6 +134,8 @@ public class RestAPIManager {
     }
 
 
+
+
     public synchronized void updateProfile(final MyProfile profile, final ProfileCallBack profileCallBack) {
         final MyProfile newUserProfile = profile;
         Call<MyProfile> call = restApiService.updateMyProfile(profile, "Bearer " + userToken.getIdToken());
@@ -155,7 +157,27 @@ public class RestAPIManager {
             }
         });
     }
+    public synchronized void getUser(final UserProfileCallBack userprofileCallBack, String login) {
 
+        Call<User> call = restApiService.getUser(login, "Bearer "+ userToken.getIdToken());
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+                    userprofileCallBack.onGetUser(response.body());
+                }
+                else {
+                    userprofileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                userprofileCallBack.onFailure(t);
+            }
+        });
+    }
     public synchronized void getUsers(final UserCallBack userCallBack) {
 
         Call<ArrayList<User>> call = restApiService.getUsers("Bearer "+ userToken.getIdToken());
