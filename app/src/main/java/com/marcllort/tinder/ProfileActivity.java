@@ -46,10 +46,11 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
-    private EditText et_location;
+    private TextView txt_distance;
     private TextView bio;
     private TextView interests;
     private TextView name;
+    private TextView gender;
     private FloatingActionButton btn_invite;
     private Uri resultUri;
     private LocationManager locationManager;
@@ -57,6 +58,8 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
     private boolean bioChanged = false, interestsChanged = false, nameChanged = false;
     private boolean actualized = false;
     int id;
+    com.marcllort.tinder.Model.Location location;
+
     MyProfile user;
 
 
@@ -78,14 +81,17 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
                 finish();
             }
         });
+
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         //saveButton();
 
-
+        txt_distance = findViewById(R.id.txt_distance);
         bio =  findViewById(R.id.et_aboutme);
         interests =  findViewById(R.id.et_interests);
         name =  findViewById(R.id.txt_name);
+        gender = findViewById(R.id.et_gender);
 
 
         /*profileImage = findViewById(R.id.profileImage);
@@ -106,8 +112,11 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
         listener = new LocationListener() {
             @Override
-            public void onLocationChanged(Location location) {
-                System.out.println("Location: " + location.getLongitude() + " " + location.getLatitude());
+            public void onLocationChanged(Location location1) {
+                System.out.println("Location: " + location1.getLongitude() + " " + location1.getLatitude());
+                location = new com.marcllort.tinder.Model.Location();
+                location.setLongitude(location1.getLongitude());
+                location.setLatitude(location1.getLatitude());
 
                 String cityName = null;
                 Geocoder gcd = new Geocoder(getBaseContext(),
@@ -123,7 +132,6 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
                     e.printStackTrace();
                 }
 
-                et_location.setText(cityName);
                 System.out.println(cityName);
             }
 
@@ -172,7 +180,16 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         user = myProfile;
         bio.setText(user.getAboutMe());
         name.setText(user.getDisplayName());
-        interests.setText(user.getFilterPreferences());
+        interests.setText(user.getBirthDate());
+        gender.setText(user.getGender().getType());
+
+        //Calcula la distancia
+        if (user.getLocation() != null) {
+            //double distance = location.distance(user.getLocation().getLongitude(), user.getLocation().getLatitude());
+            //txt_distance.setText(distance + " km away from me");
+        }else {
+            txt_distance.setText("No distance information abaliable");
+        }
     }
 
     @Override
