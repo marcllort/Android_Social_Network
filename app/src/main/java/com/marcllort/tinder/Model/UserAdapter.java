@@ -12,14 +12,14 @@ import com.marcllort.tinder.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAdapter extends ArrayAdapter<User> {
+public class UserAdapter extends ArrayAdapter<MyProfile> {
     private static final String TAG = "ArrayAdapter";
     private Context mContext;
     int mResource;
 
 
 
-    public UserAdapter(Context context, int resource, ArrayList<User> objects) {
+    public UserAdapter(Context context, int resource, ArrayList<MyProfile> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -28,13 +28,15 @@ public class UserAdapter extends ArrayAdapter<User> {
     @Override
     public View getView(int position,  View convertView,  ViewGroup parent) {
         //Get User Info
-        String name = getItem(position).getLogin();
-        String email = getItem(position).getEmail();
-        String language = getItem(position).getLangKey();
-
-        if (email == null){
-            email = " ";
+        String name = getItem(position).getDisplayName();
+        String email = " ";
+        if (getItem(position).getGender() != null){
+             email = getItem(position).getGender().getType();
         }
+
+        String language = getItem(position).getBirthDate();
+
+
         if (language == null){
             language = " ";
         }

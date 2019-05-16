@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserCallBack;
+import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserAdapter;
 
@@ -31,7 +32,7 @@ public class SearchActivity extends Activity implements UserCallBack {
     private ImageButton mainBtn;
     private ListView matchList;
     private EditText filter ;
-    ArrayList<User> names;
+    ArrayList<MyProfile> names;
     UserAdapter adapter;
 
     @Override
@@ -39,7 +40,7 @@ public class SearchActivity extends Activity implements UserCallBack {
 
         names = new ArrayList<>();
         RestAPIManager.getInstance().getUsers( this);
-        names = new ArrayList<User>();
+        names = new ArrayList<MyProfile>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         matchList = findViewById(R.id.matchList);
@@ -66,7 +67,7 @@ public class SearchActivity extends Activity implements UserCallBack {
     }
 
     @Override
-    public void onGetUsers(ArrayList <User > users){
+    public void onGetUsers(ArrayList <MyProfile > users){
        //Copiar el arraylist de users a names
         names = users;
         /*for (User i : users){
@@ -84,13 +85,13 @@ public class SearchActivity extends Activity implements UserCallBack {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                String item = names.get(position).getLogin();
+                String item = names.get(position).getDisplayName();
 
                 Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
                 Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
-                System.out.println("-------- "+ id + "---------" + names.get(position).getLogin());
+                //System.out.println("-------- "+ id + "---------" + names.get(position).getDisplayName());
 
-                profileIntent.putExtra("login", names.get(position).getLogin());
+                profileIntent.putExtra("login", names.get(position).getDisplayName());
                 startActivity(profileIntent);
             }
         });

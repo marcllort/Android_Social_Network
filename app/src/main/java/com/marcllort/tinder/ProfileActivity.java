@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -35,6 +36,8 @@ import com.marcllort.tinder.Model.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,7 +88,7 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         name =  findViewById(R.id.txt_name);
 
 
-        profileImage = findViewById(R.id.profileImage);
+        /*profileImage = findViewById(R.id.profileImage);
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +101,7 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
                 byte[] imageBytes = baos.toByteArray();
                 String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
             }
-        });
+        });*/
 
 
         listener = new LocationListener() {
@@ -228,7 +231,19 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         if(user.getEmail() != null){
             bio.setText(user.getEmail());
         }
-
+        /*URL url = null;
+        try {
+            url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Bitmap bmp = null;
+        try {
+           bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        profileImage.setImageBitmap(bmp);*/
         nameChanged = false;
 
         bioChanged = false;

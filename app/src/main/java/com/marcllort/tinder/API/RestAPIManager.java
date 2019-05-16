@@ -180,11 +180,11 @@ public class RestAPIManager {
     }
     public synchronized void getUsers(final UserCallBack userCallBack) {
 
-        Call<ArrayList<User>> call = restApiService.getUsers("Bearer "+ userToken.getIdToken());
+        Call<ArrayList<MyProfile>> call = restApiService.getUsers("Bearer "+ userToken.getIdToken());
 
-        call.enqueue(new Callback<ArrayList<User>>() {
+        call.enqueue(new Callback<ArrayList<MyProfile>>() {
             @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+            public void onResponse(Call<ArrayList<MyProfile>> call, Response<ArrayList<MyProfile>> response) {
                 if(response.isSuccessful()) {
                     userCallBack.onGetUsers(response.body());
                 }
@@ -194,7 +194,7 @@ public class RestAPIManager {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<MyProfile>> call, Throwable t) {
                 userCallBack.onFailure(t);
             }
         });

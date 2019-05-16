@@ -38,8 +38,8 @@ public interface RestAPIService {
     @GET("/api/users/{login}")
     Call<User> getUser(@Path("login")String login, @Header("Authorization") String token);
 
-    @GET("/api/users")
-    Call<ArrayList<User>> getUsers(@Header("Authorization") String token);
+    @GET("/api/profiles")
+    Call<ArrayList<MyProfile>> getUsers(@Header("Authorization") String token);
 
     @GET("/api/pending-invites")
     Call<Invitation[]> getPendingInvites(@Header("Authorization") String token, @QueryMap Map<String, String> options);
