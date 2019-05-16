@@ -56,8 +56,8 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
     private LocationListener listener;
     private boolean bioChanged = false, interestsChanged = false, nameChanged = false;
     private boolean actualized = false;
-    String login;
-    User user;
+    int id;
+    MyProfile user;
 
 
 
@@ -65,7 +65,7 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
     protected void onCreate(Bundle savedInstanceState) {
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
-            login = extras.getString("login");
+            id = extras.getInt("login");
         }
 
         super.onCreate(savedInstanceState);
@@ -150,57 +150,7 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
         System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
 
-/*        bio.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                bioChanged = true;
-
-            }
-        });*/
-
-/*        interests.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                interestsChanged = true;
-            }
-        });*/
-
-        /*name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                nameChanged = true;
-            }
-        });*/
 
         System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
 
@@ -208,46 +158,21 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
     void setData() {
         if (!actualized) {
-            RestAPIManager.getInstance().getUser(this,login);
+            RestAPIManager.getInstance().getUser(this,id);
 
 
         }
     }
 
 
-    public synchronized void onGetUser(MyProfile myProfile) {
 
-
-
-    }
 
     @Override
-    public void onGetUser(User userin) {
-         user = userin;
-
-       // bio.setText(user.getAboutMe());
-        //interests.setText(profile.getFilterPreferences());
-        name.setText(user.getLogin());
-        if(user.getEmail() != null){
-            bio.setText(user.getEmail());
-        }
-        /*URL url = null;
-        try {
-            url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Bitmap bmp = null;
-        try {
-           bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        profileImage.setImageBitmap(bmp);*/
-        nameChanged = false;
-
-        bioChanged = false;
-        interestsChanged = false;
+    public void onGetUser(MyProfile myProfile) {
+        user = myProfile;
+        bio.setText(user.getAboutMe());
+        name.setText(user.getDisplayName());
+        interests.setText(user.getFilterPreferences());
     }
 
     @Override

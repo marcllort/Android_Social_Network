@@ -157,13 +157,13 @@ public class RestAPIManager {
             }
         });
     }
-    public synchronized void getUser(final UserProfileCallBack userprofileCallBack, String login) {
+    public synchronized void getUser(final UserProfileCallBack userprofileCallBack, int login) {
 
-        Call<User> call = restApiService.getUser(login, "Bearer "+ userToken.getIdToken());
+        Call<MyProfile> call = restApiService.getUser(login, "Bearer "+ userToken.getIdToken());
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<MyProfile>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
                 if(response.isSuccessful()) {
                     userprofileCallBack.onGetUser(response.body());
                 }
@@ -173,7 +173,7 @@ public class RestAPIManager {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<MyProfile> call, Throwable t) {
                 userprofileCallBack.onFailure(t);
             }
         });

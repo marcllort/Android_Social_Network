@@ -80,6 +80,7 @@ public class MyProfile {
     private Integer weight;
 
     public MyProfile(String aboutMe, String filterPreferences, String displayName) { this.aboutMe = aboutMe; this.filterPreferences = filterPreferences; this.displayName = displayName;}
+    public MyProfile(String displayName, Gender gender, String birthday) { this.gender = gender; this.birthDate = birthday; this.displayName = displayName;}
 
     public String getAboutMe() {
         return aboutMe;

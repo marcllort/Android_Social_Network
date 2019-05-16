@@ -35,8 +35,8 @@ public interface RestAPIService {
     @PUT("/api/my-profile")
     Call<MyProfile> updateMyProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
 
-    @GET("/api/users/{login}")
-    Call<User> getUser(@Path("login")String login, @Header("Authorization") String token);
+    @GET("/api/profiles/{login}")
+    Call<MyProfile> getUser(@Path("login")int login, @Header("Authorization") String token);
 
     @GET("/api/profiles")
     Call<ArrayList<MyProfile>> getUsers(@Header("Authorization") String token);

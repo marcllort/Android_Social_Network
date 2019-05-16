@@ -32,15 +32,16 @@ public class SearchActivity extends Activity implements UserCallBack {
     private ImageButton mainBtn;
     private ListView matchList;
     private EditText filter ;
-    ArrayList<MyProfile> names;
-    UserAdapter adapter;
+    ArrayList<MyProfile> users;
+    ArrayList <String> names;
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         names = new ArrayList<>();
         RestAPIManager.getInstance().getUsers( this);
-        names = new ArrayList<MyProfile>();
+        users = new ArrayList<MyProfile>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         matchList = findViewById(R.id.matchList);
@@ -67,17 +68,16 @@ public class SearchActivity extends Activity implements UserCallBack {
     }
 
     @Override
-    public void onGetUsers(ArrayList <MyProfile > users){
-       //Copiar el arraylist de users a names
-        names = users;
-        /*for (User i : users){
-            System.out.println(i.getLogin());
-            names.add(i.getLogin());
-        }*/
+    public void onGetUsers(final ArrayList <MyProfile > users) {
+        //Copiar el arraylist de users a names
+        //names = users;
+        for (MyProfile i : users){
+            System.out.println(i.getDisplayName());
+            names.add(i.getDisplayName());
+        }
 
-        adapter = new UserAdapter(this,R.layout.activity_searchlayout,names);
+        adapter = new ArrayAdapter(this, R.layout.activity_searchlayout, names);
         matchList.setAdapter(adapter);
-
 
 
         matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,13 +85,13 @@ public class SearchActivity extends Activity implements UserCallBack {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                String item = names.get(position).getDisplayName();
 
-                Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getBaseContext(), names.get(position), Toast.LENGTH_LONG).show();
                 Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
                 //System.out.println("-------- "+ id + "---------" + names.get(position).getDisplayName());
 
-                profileIntent.putExtra("login", names.get(position).getDisplayName());
+                profileIntent.putExtra("login", users.get(position).getId());
                 startActivity(profileIntent);
             }
         });
