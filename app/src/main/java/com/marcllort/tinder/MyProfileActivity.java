@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -16,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -45,7 +47,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,6 +64,7 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     private TextView name;
     private Uri resultUri;
     private LocationManager locationManager;
+    private String image;
     private LocationListener listener;
     private boolean bioChanged = false, interestsChanged = false, nameChanged = false;
     private boolean actualized = false;
@@ -85,15 +90,9 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         profileImage = findViewById(R.id.profileImage);
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap bmp = profileImage.getDrawingCache();
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            public void onClick(View view) {            //Al subir una imagen de la galeria
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -201,6 +200,40 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
 
     }
 
+
+    public static String convertBitmapToString(Bitmap bitmap) {                                     //Convertir la imagen a base64 encoded string
+        String encodedImage = "";
+
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        try {
+            encodedImage = URLEncoder.encode(Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return encodedImage;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data != null && requestCode == 0) {
+            if(resultCode == RESULT_OK) {
+                resultUri = data.getData();
+                Bitmap bitmap;
+
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+                    image = convertBitmapToString(resizedBitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
     void setData() {
         if (!actualized) {
             RestAPIManager.getInstance().getMyProfile(this);
@@ -217,8 +250,11 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         bio.setText(profile.getAboutMe());
         interests.setText(profile.getFilterPreferences());
         name.setText(profile.getDisplayName());
-        nameChanged = false;
+        System.out.println(profile.getPicture());
+        fromStringToImage(profile.getPicture());
 
+
+        nameChanged = false;
         bioChanged = false;
         interestsChanged = false;
 
@@ -241,25 +277,6 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         });
 
     }
-
-  /*  @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {                         // Posem imatge a la imageView
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            final Uri imageUri = data.getData();
-            resultUri = imageUri;
-            profileImage.setImageURI(resultUri);
-            profileImage.buildDrawingCache();
-            Bitmap bmap = profileImage.getDrawingCache();
-            ByteArrayOutputStream stream=new ByteArrayOutputStream();
-            bmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
-            byte[] image=stream.toByteArray();
-            System.out.println("byte array:"+image);
-            String img_str = Base64.encodeToString(image, 0);
-            System.out.println("string:"+img_str);
-            bio.setText(img_str);
-        }
-    }*/
 
 
     @Override
@@ -318,6 +335,8 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         interests.setText(profile.getFilterPreferences());
         name.setText(profile.getDisplayName());
 
+
+
         Toast.makeText(getBaseContext(), "Profile Updated!", Toast.LENGTH_LONG).show();
         Intent profileIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(profileIntent);
@@ -329,36 +348,19 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
     }
 
 
-    private String encodeImage(Bitmap bm) {
+    private String fromImageToBase64() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
-        System.out.println(imgDecodableString);
-        return imgDecodableString;
-
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.profileImage);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        String image = convertBitmapToString(bitmap);
+        return image;
     }
 
-/*public static Bitmap decodeBase64(String input) {
-        byte[] decodedBytes = Base64.decode(input.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-        }
-    private String encodeImages(String path) {
-        File imagefile = new File(path);
-        FileInputStream fis = null;
-        try{
-        fis = new FileInputStream(imagefile);
-        }catch(FileNotFoundException e){
-        e.printStackTrace();
-        }
-        Bitmap bm = BitmapFactory.decodeStream(fis);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] b = baos.toByteArray();
-        String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
-        //Base64.de
-        return imgDecodableString;
-    }*/
+    private void fromStringToImage(String encodedImage) {
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
+        profileImage.setImageBitmap(decodedImage);
+    }
 
 }
