@@ -50,22 +50,9 @@ public class SearchActivity extends Activity implements UserCallBack {
 
         matchList = findViewById(R.id.matchList);
 
-        /*names.add("Alex");
-        names.add("Almansa");
-        names.add("Marc");
-        names.add("Paula");
-        names.add("Javo");
-*/
-
-
-
-
-
-
-        //matchList.add
-
 
     }
+
 
     @Override
     public void onGetUsers(final ArrayList <MyProfile > users) {
@@ -98,13 +85,7 @@ public class SearchActivity extends Activity implements UserCallBack {
 
 
 
-       /* matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(SearchActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
 
-            }
-        });*/
         filter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
