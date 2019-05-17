@@ -28,9 +28,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.marcllort.tinder.API.InviteCallBack;
 import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserProfileCallBack;
+import com.marcllort.tinder.Model.Invitation;
 import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.User;
 
@@ -42,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ProfileActivity extends  AppCompatActivity implements UserProfileCallBack {
+public class ProfileActivity extends  AppCompatActivity implements UserProfileCallBack , InviteCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
@@ -66,6 +68,7 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        location= new com.marcllort.tinder.Model.Location();
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
             id = extras.getInt("login");
@@ -77,7 +80,7 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         btn_invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                RestAPIManager.getInstance().inviteUser(ProfileActivity.this, user.getId());
                 finish();
             }
         });
@@ -181,15 +184,26 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         bio.setText(user.getAboutMe());
         name.setText(user.getDisplayName());
         interests.setText(user.getBirthDate());
-        gender.setText(user.getGender().getType());
+        if (user.getGender() != null){
+            gender.setText(user.getGender().getType());
+        }
+
 
         //Calcula la distancia
         if (user.getLocation() != null) {
-            //double distance = location.distance(user.getLocation().getLongitude(), user.getLocation().getLatitude());
-            //txt_distance.setText(distance + " km away from me");
+            double latitude = user.getLocation().getLongitude();
+            double longitude = user.getLocation().getLatitude();
+            double distance = location.distance(longitude, latitude);
+            txt_distance.setText(distance + " km away from me");
         }else {
-            txt_distance.setText("No distance information abaliable");
+            txt_distance.setText("No distance information avaliable");
         }
+    }
+
+    @Override
+    public void onGetInvitation(Invitation invitation) {
+        Toast.makeText(ProfileActivity.this, "Invitation sent", Toast.LENGTH_SHORT).show();
+        System.out.println("Invitacio enviada");
     }
 
     @Override

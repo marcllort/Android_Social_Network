@@ -46,4 +46,8 @@ public interface RestAPIService {
 
     @GET("/api/invitations")
     Call<Invitation[]> getAllInvitations (@Header("Authorization") String token, @QueryMap Map<String, String> options);
+
+    @POST("/api/invite/{id}")
+    Call<Invitation> inviteUser(@Path("login")int id, @Header("Authorization") String token);
+
 }

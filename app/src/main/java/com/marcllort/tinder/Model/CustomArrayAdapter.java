@@ -31,7 +31,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Invitation> {
         ImageView imageView = convertView.findViewById(R.id.mainImage);
 
         name.setText(invitation.getSent().getDisplayName());
-        imageView.setImageResource(Integer.parseInt(invitation.getSent().getPicture()));
+        if (invitation.getSent().getPicture() != null){
+            imageView.setImageResource(Integer.parseInt(invitation.getSent().getPicture()));
+        }
 
         return convertView;
     }

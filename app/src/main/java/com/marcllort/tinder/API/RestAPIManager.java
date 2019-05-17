@@ -220,4 +220,24 @@ public class RestAPIManager {
         });
     }
 
+    public synchronized void inviteUser (final InviteCallBack inviteCallBack, int id){
+        Call<Invitation> call = restApiService.inviteUser(id,"Bearer "+ userToken.getIdToken());
+
+        call.enqueue(new Callback<Invitation>() {
+            @Override
+            public void onResponse(Call<Invitation> call, Response<Invitation> response) {
+                if (response.isSuccessful()){
+                    inviteCallBack.onGetInvitation(response.body());
+                }else {
+                    inviteCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Invitation> call, Throwable t) {
+                inviteCallBack.onFailure(t);
+            }
+        });
+    }
+
 }
