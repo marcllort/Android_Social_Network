@@ -95,22 +95,10 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         interests =  findViewById(R.id.et_interests);
         name =  findViewById(R.id.txt_name);
         gender = findViewById(R.id.et_gender);
+        profileImage = findViewById(R.id.profileImage);
 
 
-        /*profileImage = findViewById(R.id.profileImage);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap bmp = profileImage.getDrawingCache();
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            }
-        });*/
+
 
 
         listener = new LocationListener() {
@@ -184,6 +172,10 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
         bio.setText(user.getAboutMe());
         name.setText(user.getDisplayName());
         interests.setText(user.getBirthDate());
+        if (user.getPicture() != null) {
+            fromStringToImage(user.getPicture());
+        }
+
         if (user.getGender() != null){
             gender.setText(user.getGender().getType());
         }
@@ -208,6 +200,8 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
     @Override
     public void onFailure(Throwable t) {
+        Toast.makeText(ProfileActivity.this, "Error sending invitation", Toast.LENGTH_SHORT).show();
+        System.out.println("Invitacio erronia");
     }
 
 
@@ -249,36 +243,12 @@ public class ProfileActivity extends  AppCompatActivity implements UserProfileCa
 
 
 
-    private String encodeImage(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
-        System.out.println(imgDecodableString);
-        return imgDecodableString;
+    private void fromStringToImage(String encodedImage) {
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
+        profileImage.setImageBitmap(decodedImage);
     }
-
-/*public static Bitmap decodeBase64(String input) {
-        byte[] decodedBytes = Base64.decode(input.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-        }
-    private String encodeImages(String path) {
-        File imagefile = new File(path);
-        FileInputStream fis = null;
-        try{
-        fis = new FileInputStream(imagefile);
-        }catch(FileNotFoundException e){
-        e.printStackTrace();
-        }
-        Bitmap bm = BitmapFactory.decodeStream(fis);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] b = baos.toByteArray();
-        String imgDecodableString = Base64.encodeToString(b, Base64.DEFAULT);
-        //Base64.de
-        return imgDecodableString;
-    }*/
 
 
 }
