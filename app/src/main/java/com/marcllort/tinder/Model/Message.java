@@ -34,6 +34,12 @@ public class Message {
     @Expose
     private String url;
 
+
+    public Message(String messagee, User senderr){
+        message=messagee;
+        sender=senderr;
+    }
+
     public Chatroom getChatroom() {
         return chatroom;
     }

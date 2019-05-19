@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".LoginActivity"
             android:theme="@style/SplashTheme">
@@ -27,6 +29,8 @@
         <activity android:name=".MatchesActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".ChatActivity"
+            android:theme="@style/AppTheme2"/>
 
 
     </application>

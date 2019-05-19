@@ -40,5 +40,8 @@
     <string name="error_mail">Mail is empty</string>
     <string name="error_repass">Passwords do not match</string>
 
+    <string name="message">Type something!</string>
+    <string name="send_label">Send</string>
+
 
 </resources>

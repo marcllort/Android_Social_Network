@@ -5,14 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
+import com.google.android.material.textfield.TextInputEditText;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.marcllort.tinder.API.LoginCallBack;
-import com.marcllort.tinder.API.RegisterCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserToken;
 
