@@ -3,6 +3,7 @@ package com.marcllort.tinder;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +24,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessageListAdapter mMessageAdapter;
     private EditText mChatBox;
     private Button mSendButton;
+    private Toolbar mToolbar;
 
     private List<Message> messageList;
 
@@ -56,6 +58,8 @@ public class ChatActivity extends AppCompatActivity {
         mChatBox = (EditText) findViewById(R.id.edittext_chatbox);
         mSendButton = (Button) findViewById(R.id.button_chatbox_send);
 
+        topBarSetup();
+
         mChatBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -88,6 +92,22 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    private void topBarSetup(){
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Marc prova");
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+    }
 
     private void getChatMessages() {
 
