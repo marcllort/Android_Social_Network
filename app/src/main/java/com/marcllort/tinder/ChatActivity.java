@@ -1,5 +1,6 @@
 package com.marcllort.tinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.marcllort.tinder.Model.Message;
@@ -28,26 +30,37 @@ public class ChatActivity extends AppCompatActivity {
     private Button mSendButton;
     private Toolbar mToolbar;
     private String user;
+    private int userid;
     private List<Message> messageList;
-    private NestedScrollView nestedScroll;
-
+    private ImageView profileImage;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         Bundle extras = getIntent().getExtras();
-        if(extras !=null) {
+        if (extras != null) {
             user = extras.getString("login");
+            userid = extras.getInt("id");
         }
 
+        recyclerSetup();
+        topBarSetup();
+        chatBoxSetup();
 
+        getChatMessages();
+
+        if (messageList.size() !=0) {
+            mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
+        }
+    }
+
+
+    private void recyclerSetup(){
         messageList = new ArrayList<>();
-        for (int i = 0; i < 27; i++) {
-            messageList.add(new Message("Rebo" + i, new User(user, "sd", "ES")));
-            messageList.add(new Message("Envio" + i, null));
-        }
+
 
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
         mMessageRecycler.setNestedScrollingEnabled(false);
@@ -60,23 +73,15 @@ public class ChatActivity extends AppCompatActivity {
         mMessageRecycler.setLayoutManager(linearLayoutManager);
 
 
-
         mMessageAdapter = new MessageListAdapter(this, getChatData());
         mMessageRecycler.setAdapter(mMessageAdapter);
 
+    }
+
+    private void chatBoxSetup(){
+
         mChatBox = (EditText) findViewById(R.id.edittext_chatbox);
         mSendButton = (Button) findViewById(R.id.button_chatbox_send);
-
-        topBarSetup();
-        mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
-        /*nestedScroll = findViewById(R.id.nested);
-
-        nestedScroll.post(new Runnable() {
-            @Override
-            public void run() {
-                nestedScroll.fullScroll(View.FOCUS_DOWN);
-            }
-        });*/
 
         mChatBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -106,19 +111,15 @@ public class ChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
-
-
     }
 
-
-
-    private void topBarSetup(){
+    private void topBarSetup() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        TextView title= findViewById(R.id.text_toolbar_title);
+        TextView title = findViewById(R.id.text_toolbar_title);
         title.setText(user);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -128,19 +129,32 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        profileImage = findViewById(R.id.image_profile);
+        //profileImage.setImageBitmap();                                                                        //Posem la imatge de perfil-----------------------------------------------------------------
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                profileIntent.putExtra("login", userid);
+                startActivity(profileIntent);
+            }
+        });
 
-    }
+
+    }                                                                                           // cal modificar coses aqui
 
     private void getChatMessages() {
 
+        for (int i = 0; i < 27; i++) {
+            messageList.add(new Message("Rebo" + i, new User(user, "sd", "ES")));
+            messageList.add(new Message("Envio" + i, null));
+        }
+
         Message message = new Message("provaaa", new User(user, "sd", "ES"));
         if (message != null && message.getSender() != null) {
-            Boolean isCurrentUser = message.getSender().equals(0);
-
             mMessageAdapter.notifyDataSetChanged();
         }
-    }
-
+    }                                                                                        // cal modificar coses aqui
 
     private void sendMessage() {
 
@@ -150,18 +164,9 @@ public class ChatActivity extends AppCompatActivity {
             messageList.add(new Message(messageText, null));
         }
         getChatMessages();
-
-        // clear text after hitting send;
         mChatBox.setText(null);
-
         mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
 
-        /*nestedScroll.post(new Runnable() {
-            @Override
-            public void run() {
-                nestedScroll.fullScroll(View.FOCUS_DOWN);
-            }
-        });*/
     }
 
     private List<Message> getChatData() {

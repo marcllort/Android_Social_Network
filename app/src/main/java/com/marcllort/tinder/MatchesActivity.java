@@ -16,6 +16,7 @@ public class MatchesActivity extends Activity {
 
 
     private ImageButton profileBtn;
+    private ImageButton chatButton;
     private ImageButton mainBtn;
     private ListView matchList;
 
@@ -30,43 +31,13 @@ public class MatchesActivity extends Activity {
         setContentView(R.layout.activity_matches);
 
         topBarSetup();
-        for (int i =0; i < 5; i++) {
-            listItems.add("Marc");
-            listItems.add("Paula");
-            listItems.add("Javo");
-            listItems.add("Alex");
-            listItems.add("Marcel");
-        }
-
-
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                listItems);
-
-
-        matchList = findViewById(R.id.matchList);
-        matchList.setAdapter(adapter);
-        //matchList.add
-
-        matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-
-                //Toast.makeText(getBaseContext(), names.get(position), Toast.LENGTH_LONG).show();
-                Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
-                //System.out.println("-------- "+ id + "---------" + names.get(position).getDisplayName());
-
-                chatIntent.putExtra("login", listItems.get(position));
-                startActivity(chatIntent);
-            }
-        });
-
+        listSetup();
 
     }
 
-    public void addItems(View v) {
-        listItems.add("Clicked :");
+
+    public void addItems(String user) {
+        listItems.add(user);
         adapter.notifyDataSetChanged();
     }
 
@@ -90,6 +61,45 @@ public class MatchesActivity extends Activity {
             }
         });
 
+        chatButton = findViewById(R.id.btn_matches);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
+    private void listSetup() {
+        for (int i = 0; i < 5; i++) {                                                                       // Aqui farem el get de els users amb qui tenim connection
+            listItems.add("Marc");
+            listItems.add("Paula");
+            listItems.add("Javo");
+            listItems.add("Alex");
+            listItems.add("Marcel");
+        }
+
+
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                listItems);
+
+
+        matchList = findViewById(R.id.matchList);
+        matchList.setAdapter(adapter);
+
+
+        matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
+                chatIntent.putExtra("login", listItems.get(position));                                                                  // passar el nom de usuari
+                chatIntent.putExtra("userid", 20);                                                                              // cal posar el id del user
+                startActivity(chatIntent);
+            }
+        });
     }
 
 }
