@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.marcllort.tinder.Model.Message;
 import com.marcllort.tinder.Model.User;
@@ -25,8 +27,9 @@ public class ChatActivity extends AppCompatActivity {
     private EditText mChatBox;
     private Button mSendButton;
     private Toolbar mToolbar;
-
+    private String user;
     private List<Message> messageList;
+    private NestedScrollView nestedScroll;
 
     @Override
 
@@ -34,9 +37,15 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            user = extras.getString("login");
+        }
+
+
         messageList = new ArrayList<>();
         for (int i = 0; i < 27; i++) {
-            messageList.add(new Message("Rebo" + i, new User("marc", "sd", "ES")));
+            messageList.add(new Message("Rebo" + i, new User(user, "sd", "ES")));
             messageList.add(new Message("Envio" + i, null));
         }
 
@@ -59,6 +68,15 @@ public class ChatActivity extends AppCompatActivity {
         mSendButton = (Button) findViewById(R.id.button_chatbox_send);
 
         topBarSetup();
+        mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
+        /*nestedScroll = findViewById(R.id.nested);
+
+        nestedScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                nestedScroll.fullScroll(View.FOCUS_DOWN);
+            }
+        });*/
 
         mChatBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -92,12 +110,16 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+
+
     private void topBarSetup(){
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Marc prova");
+        TextView title= findViewById(R.id.text_toolbar_title);
+        title.setText(user);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +133,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getChatMessages() {
 
-        Message message = new Message("provaaa", new User("marc", "sd", "ES"));
+        Message message = new Message("provaaa", new User(user, "sd", "ES"));
         if (message != null && message.getSender() != null) {
             Boolean isCurrentUser = message.getSender().equals(0);
 
@@ -128,9 +150,18 @@ public class ChatActivity extends AppCompatActivity {
             messageList.add(new Message(messageText, null));
         }
         getChatMessages();
-        mMessageRecycler.smoothScrollToPosition (0);
+
         // clear text after hitting send;
         mChatBox.setText(null);
+
+        mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
+
+        /*nestedScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                nestedScroll.fullScroll(View.FOCUS_DOWN);
+            }
+        });*/
     }
 
     private List<Message> getChatData() {
