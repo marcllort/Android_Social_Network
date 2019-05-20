@@ -50,4 +50,7 @@ public interface RestAPIService {
     @POST("/api/invite/{id}")
     Call<Invitation> inviteUser(@Path("id")int id, @Header("Authorization") String token);
 
+    @GET("/api/my-friends")
+    Call<ArrayList<MyProfile>> getConnections(@Header("Authorization") String token);
+
 }

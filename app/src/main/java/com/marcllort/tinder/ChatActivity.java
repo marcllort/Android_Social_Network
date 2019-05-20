@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerSetup();
         topBarSetup();
         chatBoxSetup();
-
+        initLocal();
         getChatMessages();
 
         if (messageList.size() !=0) {
@@ -143,12 +143,16 @@ public class ChatActivity extends AppCompatActivity {
 
     }                                                                                           // cal modificar coses aqui
 
-    private void getChatMessages() {
-
+    private void initLocal(){                                                                                               //shaura de borrar
         for (int i = 0; i < 27; i++) {
             messageList.add(new Message("Rebo" + i, new User(user, "sd", "ES")));
             messageList.add(new Message("Envio" + i, null));
         }
+    }
+
+    private void getChatMessages() {
+
+
 
         Message message = new Message("provaaa", new User(user, "sd", "ES"));
         if (message != null && message.getSender() != null) {

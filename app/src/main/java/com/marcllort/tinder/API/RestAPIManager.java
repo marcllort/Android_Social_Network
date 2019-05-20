@@ -40,7 +40,6 @@ public class RestAPIManager {
     }
 
 
-
     public synchronized void getUserToken(String username, String password, final LoginCallBack loginCallBack) {
         UserData userData = new UserData(username, password);
         Call<UserToken> call = restApiService.requestToken(userData);
@@ -94,11 +93,10 @@ public class RestAPIManager {
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
 
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     createProfileCallBack.onCreateMyProfile(response.body());
                     createProfileCallBack.onSuccess();
-                }
-                else {
+                } else {
                     createProfileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
                 }
             }
@@ -113,15 +111,14 @@ public class RestAPIManager {
 
     public synchronized void getMyProfile(final ProfileCallBack profileCallBack) {
 
-        Call<MyProfile> call = restApiService.getMyProfile("Bearer "+ userToken.getIdToken());
+        Call<MyProfile> call = restApiService.getMyProfile("Bearer " + userToken.getIdToken());
 
         call.enqueue(new Callback<MyProfile>() {
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     profileCallBack.onGetProfile(response.body());
-                }
-                else {
+                } else {
                     profileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
                 }
             }
@@ -132,8 +129,6 @@ public class RestAPIManager {
             }
         });
     }
-
-
 
 
     public synchronized void updateProfile(final MyProfile profile, final ProfileCallBack profileCallBack) {
@@ -143,10 +138,9 @@ public class RestAPIManager {
         call.enqueue(new Callback<MyProfile>() {
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     profileCallBack.onUpdateProfile(newUserProfile);
-                }
-                else {
+                } else {
                     profileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
                 }
             }
@@ -157,17 +151,17 @@ public class RestAPIManager {
             }
         });
     }
+
     public synchronized void getUser(final UserProfileCallBack userprofileCallBack, int login) {
 
-        Call<MyProfile> call = restApiService.getUser(login, "Bearer "+ userToken.getIdToken());
+        Call<MyProfile> call = restApiService.getUser(login, "Bearer " + userToken.getIdToken());
 
         call.enqueue(new Callback<MyProfile>() {
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     userprofileCallBack.onGetUser(response.body());
-                }
-                else {
+                } else {
                     userprofileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
                 }
             }
@@ -178,17 +172,17 @@ public class RestAPIManager {
             }
         });
     }
+
     public synchronized void getUsers(final UserCallBack userCallBack) {
 
-        Call<ArrayList<MyProfile>> call = restApiService.getUsers("Bearer "+ userToken.getIdToken());
+        Call<ArrayList<MyProfile>> call = restApiService.getUsers("Bearer " + userToken.getIdToken());
 
         call.enqueue(new Callback<ArrayList<MyProfile>>() {
             @Override
             public void onResponse(Call<ArrayList<MyProfile>> call, Response<ArrayList<MyProfile>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     userCallBack.onGetUsers(response.body());
-                }
-                else {
+                } else {
                     userCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
                 }
             }
@@ -200,15 +194,15 @@ public class RestAPIManager {
         });
     }
 
-    public synchronized void getAllInvitations (final InvitationCallBack invitationCallBack){
-        Call<Invitation[]> call = restApiService.getPendingInvites("Bearer "+ userToken.getIdToken(), new HashMap<String, String>());
+    public synchronized void getAllInvitations(final InvitationCallBack invitationCallBack) {
+        Call<Invitation[]> call = restApiService.getPendingInvites("Bearer " + userToken.getIdToken(), new HashMap<String, String>());
 
         call.enqueue(new Callback<Invitation[]>() {
             @Override
             public void onResponse(Call<Invitation[]> call, Response<Invitation[]> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     invitationCallBack.onGetAllInvitations(response.body());
-                }else {
+                } else {
                     invitationCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
                 }
             }
@@ -220,15 +214,15 @@ public class RestAPIManager {
         });
     }
 
-    public synchronized void inviteUser (final InviteCallBack inviteCallBack, int id){
-        Call<Invitation> call = restApiService.inviteUser(id,"Bearer "+ userToken.getIdToken());
+    public synchronized void inviteUser(final InviteCallBack inviteCallBack, int id) {
+        Call<Invitation> call = restApiService.inviteUser(id, "Bearer " + userToken.getIdToken());
 
         call.enqueue(new Callback<Invitation>() {
             @Override
             public void onResponse(Call<Invitation> call, Response<Invitation> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     inviteCallBack.onGetInvitation(response.body());
-                }else {
+                } else {
                     inviteCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
                 }
             }
@@ -236,6 +230,27 @@ public class RestAPIManager {
             @Override
             public void onFailure(Call<Invitation> call, Throwable t) {
                 inviteCallBack.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void getConnections(final ConnectionsCallBack connectionsCallBack) {
+
+        Call<ArrayList<MyProfile>> call = restApiService.getConnections("Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<ArrayList<MyProfile>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MyProfile>> call, Response<ArrayList<MyProfile>> response) {
+                if (response.isSuccessful()) {
+                    connectionsCallBack.onGetConnections(response.body());
+                } else {
+                    connectionsCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MyProfile>> call, Throwable t) {
+                connectionsCallBack.onFailure(t);
             }
         });
     }

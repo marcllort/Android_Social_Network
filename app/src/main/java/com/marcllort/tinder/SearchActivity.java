@@ -55,7 +55,7 @@ public class SearchActivity extends Activity implements UserCallBack {
         //Copiar el arraylist de users a names
         //names = users;
         for (MyProfile i : users) {
-            System.out.println(i.getDisplayName());
+            //System.out.println(i.getDisplayName());
             names.add(i.getDisplayName());
         }
 
