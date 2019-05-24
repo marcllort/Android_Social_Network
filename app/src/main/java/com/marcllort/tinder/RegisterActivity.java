@@ -1,10 +1,9 @@
 package com.marcllort.tinder;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.support.design.widget.TextInputEditText;
 import android.util.Patterns;
 import android.view.View;
