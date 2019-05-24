@@ -1,9 +1,7 @@
 
 package com.marcllort.tinder;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -12,39 +10,30 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marcllort.tinder.API.InviteCallBack;
-import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserProfileCallBack;
 import com.marcllort.tinder.Model.Invitation;
 import com.marcllort.tinder.Model.MyProfile;
-import com.marcllort.tinder.Model.User;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
 
-public class ProfileActivity extends  AppCompatActivity implements UserProfileCallBack , InviteCallBack {
+public class ProfileActivity extends AppCompatActivity implements UserProfileCallBack , InviteCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
