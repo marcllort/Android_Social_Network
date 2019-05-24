@@ -3,13 +3,12 @@ package com.marcllort.tinder;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-
-import com.marcllort.tinder.API.RegisterCallBack;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
