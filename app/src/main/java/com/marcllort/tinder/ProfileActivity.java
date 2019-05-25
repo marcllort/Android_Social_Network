@@ -13,8 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Base64;
@@ -23,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.marcllort.tinder.API.InviteCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserProfileCallBack;
@@ -34,7 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ProfileActivity extends  AppCompatActivity implements UserProfileCallBack , InviteCallBack {
+public class ProfileActivity extends AppCompatActivity implements UserProfileCallBack , InviteCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;

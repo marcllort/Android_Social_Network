@@ -3,13 +3,13 @@ package com.marcllort.tinder;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.textfield.TextInputEditText;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.marcllort.tinder.API.RegisterCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 

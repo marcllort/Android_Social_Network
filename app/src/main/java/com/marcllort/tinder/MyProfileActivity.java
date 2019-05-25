@@ -296,7 +296,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         et_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
+             //   locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
 
 
             }
