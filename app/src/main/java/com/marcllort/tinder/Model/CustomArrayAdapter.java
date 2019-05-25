@@ -37,6 +37,4 @@ public class CustomArrayAdapter extends ArrayAdapter<Invitation> {
 
         return convertView;
     }
-
-
 }

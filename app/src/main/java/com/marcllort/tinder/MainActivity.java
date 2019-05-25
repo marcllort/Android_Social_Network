@@ -17,12 +17,13 @@ import com.marcllort.tinder.Model.CustomArrayAdapter;
 import com.marcllort.tinder.Model.Invitation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MainActivity extends Activity implements InvitationCallBack {
 
     private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
-    private Invitation[] invitations;
+    private ArrayList<Invitation> invitationsArr;
     private CustomArrayAdapter arrayAdapter;                                                              // Adaptador de infromació a targetes
     private SwipeFlingAdapterView flingContainer;
     private ImageButton leftBtn;
@@ -70,7 +71,8 @@ public class MainActivity extends Activity implements InvitationCallBack {
             @Override
             public void removeFirstObjectInAdapter() {                                                      // S'executa al fer el swipe a qualsevol lloc, demoment borra el objecte del array de info
                 Log.d("LIST", "removed object!");
-                data.remove(0);
+                invitationsArr.remove(0);
+                //data.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -166,9 +168,9 @@ public class MainActivity extends Activity implements InvitationCallBack {
 
     @Override
     public void onGetAllInvitations(Invitation[] invitations) {
-        this.invitations = invitations;
+        this.invitationsArr =new ArrayList<>(Arrays.asList(invitations));
 
-        arrayAdapter = new CustomArrayAdapter(this, R.layout.item, invitations);                // Adaptem el arraylist a el format necessari per les targetes
+       // arrayAdapter = new CustomArrayAdapter(this, R.layout.item, invitationsArr);                // Adaptem el arraylist a el format necessari per les targetes
 
         createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
 

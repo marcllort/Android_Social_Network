@@ -2,11 +2,8 @@
 package com.marcllort.tinder;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -19,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -26,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,25 +33,17 @@ import android.widget.Toast;
 import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.Model.MyProfile;
-import com.marcllort.tinder.Model.User;
-import com.squareup.picasso.Picasso;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
 
-public class MyProfileActivity extends  AppCompatActivity implements ProfileCallBack {
+public class MyProfileActivity extends AppCompatActivity implements ProfileCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
@@ -308,7 +297,7 @@ public class MyProfileActivity extends  AppCompatActivity implements ProfileCall
         et_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
+             //   locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
 
 
             }

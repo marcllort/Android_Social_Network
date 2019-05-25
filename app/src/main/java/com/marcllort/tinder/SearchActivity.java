@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserCallBack;
 import com.marcllort.tinder.Model.MyProfile;
+import com.marcllort.tinder.Model.User;
 
 import java.util.ArrayList;
 
@@ -72,8 +73,8 @@ public class SearchActivity extends Activity implements UserCallBack {
                 Toast.makeText(getBaseContext(), names.get(position), Toast.LENGTH_LONG).show();
                 Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
                 //System.out.println("-------- "+ id + "---------" + names.get(position).getDisplayName());
-
-                profileIntent.putExtra("login", users.get(position).getId());
+                MyProfile user = (MyProfile) adapter.getItem(position);
+                profileIntent.putExtra("login", user.getId());
                 startActivity(profileIntent);
             }
         });
