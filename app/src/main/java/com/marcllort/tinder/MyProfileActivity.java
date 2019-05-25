@@ -16,11 +16,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -297,7 +296,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         et_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //   locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
+                locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
 
 
             }
