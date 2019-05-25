@@ -1,13 +1,14 @@
 
 package com.marcllort.tinder.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class MyProfile {
+public class MyProfile implements Serializable {
 
     @SerializedName("aboutMe")
     @Expose
@@ -81,6 +82,8 @@ public class MyProfile {
 
     public MyProfile(String aboutMe, String filterPreferences, String displayName) { this.aboutMe = aboutMe; this.filterPreferences = filterPreferences; this.displayName = displayName;}
     public MyProfile(String displayName, Gender gender, String birthday) { this.gender = gender; this.birthDate = birthday; this.displayName = displayName;}
+
+    public MyProfile(String displayName, User user, int id) { this.id = id; this.user = user; this.displayName = displayName;}
 
     public String getAboutMe() {
         return aboutMe;

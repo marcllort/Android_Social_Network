@@ -12,10 +12,11 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ProfileActivity extends AppCompatActivity implements UserProfileCallBack , InviteCallBack {
+public class ProfileActivity extends  AppCompatActivity implements UserProfileCallBack , InviteCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
