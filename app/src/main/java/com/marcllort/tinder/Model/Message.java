@@ -29,15 +29,25 @@ public class Message {
     private String pictureContentType;
     @SerializedName("sender")
     @Expose
-    private User sender;
+    private MyProfile sender;
+    @SerializedName("recipient")
+    @Expose
+    private MyProfile reciver;
     @SerializedName("url")
     @Expose
     private String url;
 
 
-    public Message(String messagee, User senderr){
-        message=messagee;
-        sender=senderr;
+    public Message(String messagee, MyProfile senderr, MyProfile reciverr, int idd) {
+        id = idd+1;
+        message = messagee;
+        sender = senderr;
+        createdDate = "2019-05-21T18:56:00Z";
+        url = "";
+        picture = "";
+        pictureContentType = null;
+        reciver = reciverr;
+
     }
 
     public Chatroom getChatroom() {
@@ -96,11 +106,15 @@ public class Message {
         this.pictureContentType = pictureContentType;
     }
 
-    public User getSender() {
+    public MyProfile getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public MyProfile getReciver() {
+        return reciver;
+    }
+
+    public void setSender(MyProfile sender) {
         this.sender = sender;
     }
 

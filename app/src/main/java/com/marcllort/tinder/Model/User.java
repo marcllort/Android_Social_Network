@@ -1,10 +1,11 @@
 package com.marcllort.tinder.Model;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements Serializable {
 
     @SerializedName("activated")
     @Expose
@@ -154,5 +155,9 @@ public class User {
         this.login = name;
         this.email = email;
         this.langKey = langKey;
+    }
+
+    public User(int id ){
+        this.id = id;
     }
 }

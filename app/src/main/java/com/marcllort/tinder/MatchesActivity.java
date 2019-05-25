@@ -12,19 +12,25 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.marcllort.tinder.API.AccountCallback;
 import com.marcllort.tinder.API.ConnectionsCallBack;
+import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.Model.MyProfile;
+import com.marcllort.tinder.Model.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MatchesActivity extends Activity implements ConnectionsCallBack {
+public class MatchesActivity extends Activity implements ConnectionsCallBack, AccountCallback, ProfileCallBack {
 
 
     private ImageButton profileBtn;
     private ImageButton chatButton;
     private ImageButton mainBtn;
     private ListView matchList;
+    private User account;
+    private MyProfile profile;
 
     ArrayList<String> listItems = new ArrayList<String>();
 
@@ -36,6 +42,8 @@ public class MatchesActivity extends Activity implements ConnectionsCallBack {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
         RestAPIManager.getInstance().getConnections(this);
+        RestAPIManager.getInstance().getAccount(this);
+        RestAPIManager.getInstance().getMyProfile(this);
         topBarSetup();
         listSetup();
 
@@ -92,7 +100,7 @@ public class MatchesActivity extends Activity implements ConnectionsCallBack {
     @Override
     public void onGetConnections(final ArrayList<MyProfile> users) {
         for (MyProfile i : users) {
-            System.out.println(i.getDisplayName());
+            //System.out.println(i.getId());
             listItems.add(i.getDisplayName());
         }
 
@@ -111,10 +119,29 @@ public class MatchesActivity extends Activity implements ConnectionsCallBack {
                                     long id) {
                 Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
                 chatIntent.putExtra("login", listItems.get(position));                                                                  // passar el nom de usuari
+                System.out.println("ID USERID: " +users.get(position).getId() +"  postioin: "+ position);
                 chatIntent.putExtra("userid", users.get(position).getId());                                                                              // cal posar el id del user
+                chatIntent.putExtra("myuser", (Serializable) account);
+                chatIntent.putExtra("myprofile", (Serializable) profile);
+                chatIntent.putExtra("destprofile", (Serializable) users.get(position));
                 startActivity(chatIntent);
             }
         });
+
+    }
+
+    @Override
+    public void onGetAccount(User account2) {
+        account=account2;
+    }
+
+    @Override
+    public void onGetProfile(MyProfile myProfile) {
+        profile=myProfile;
+    }
+
+    @Override
+    public void onUpdateProfile(MyProfile myProfile) {
 
     }
 

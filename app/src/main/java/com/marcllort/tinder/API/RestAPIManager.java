@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestAPIManager {
 
-    private static final String BASE_URL = "http://android2.byted.xyz/";
+    private static final String BASE_URL = "http://android3.byted.xyz/";
     private static RestAPIManager ourInstance;
     private Retrofit retrofit;
     private RestAPIService restApiService;
@@ -126,6 +126,27 @@ public class RestAPIManager {
             @Override
             public void onFailure(Call<MyProfile> call, Throwable t) {
                 profileCallBack.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void getAccount(final AccountCallback accountCallback) {
+
+        Call<User> call = restApiService.getAccount("Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    accountCallback.onGetAccount(response.body());
+                } else {
+                    accountCallback.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                accountCallback.onFailure(t);
             }
         });
     }
@@ -251,6 +272,51 @@ public class RestAPIManager {
             @Override
             public void onFailure(Call<ArrayList<MyProfile>> call, Throwable t) {
                 connectionsCallBack.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void getMessages(final MessageCallback messageCallback) {
+
+        Call<ArrayList<Message>> call = restApiService.getMessages("Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<ArrayList<Message>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Message>> call, Response<ArrayList<Message>> response) {
+                if (response.isSuccessful()) {
+                    messageCallback.onGetMessages(response.body());
+                } else {
+                    messageCallback.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Message>> call, Throwable t) {
+                messageCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void sendMessage(Message message, final MessageCallback messageCallback) {
+
+        Call<Message> call = restApiService.sendMessage(message, "Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+
+                if (response.isSuccessful()) {
+                    messageCallback.onSendMessage();
+
+                } else {
+                    messageCallback.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                messageCallback.onFailure(t);
             }
         });
     }

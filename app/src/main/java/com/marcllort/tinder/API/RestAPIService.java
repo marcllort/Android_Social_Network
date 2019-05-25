@@ -2,6 +2,7 @@ package com.marcllort.tinder.API;
 
 
 import com.marcllort.tinder.Model.Invitation;
+import com.marcllort.tinder.Model.Message;
 import com.marcllort.tinder.Model.MyProfile;
 import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserData;
@@ -32,6 +33,9 @@ public interface RestAPIService {
     @GET("/api/my-profile")
     Call<MyProfile> getMyProfile(@Header("Authorization") String token);
 
+    @GET("/api/account")
+    Call<User> getAccount(@Header("Authorization") String token);
+
     @PUT("/api/my-profile")
     Call<MyProfile> updateMyProfile(@Body MyProfile myProfile, @Header("Authorization") String token);
 
@@ -52,5 +56,11 @@ public interface RestAPIService {
 
     @GET("/api/my-friends")
     Call<ArrayList<MyProfile>> getConnections(@Header("Authorization") String token);
+
+    @GET("/api/direct-messages")
+    Call<ArrayList<Message>> getMessages(@Header("Authorization") String token);
+
+    @PUT("/api/direct-messages")
+    Call<Message> sendMessage(@Body Message message, @Header("Authorization") String token);
 
 }

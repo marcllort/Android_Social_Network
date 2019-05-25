@@ -3,6 +3,7 @@ package com.marcllort.tinder;
 import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,16 @@ import java.util.List;
 public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
+    private int iduser;
+
 
     private Context mContext;
     private List<Message> mMessageList;
 
-    public MessageListAdapter(Context context, List<Message> messageList) {
+    public MessageListAdapter(Context context, List<Message> messageList, int id) {
         mContext = context;
         mMessageList = messageList;
+        iduser = id;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         Message message = (Message) mMessageList.get(position);
 
-        if (message.getSender() == null) {                                                            //ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOR
+        if (message.getSender().getId() != iduser) {                                                            //ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOR
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
@@ -113,9 +117,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             // Format the stored timestamp into a readable String using method.
             timeText.setText(message.getCreatedDate());
 
-            if (message.getSender()!=null) {
-                nameText.setText(message.getSender().getLogin());
-            }else{
+            if (message.getSender() != null) {
+                nameText.setText(message.getSender().getUser().getLogin());
+            } else {
                 nameText.setText("You");
             }
             //Utils.displayRoundImageFromUrl(mContext, message.getSender().getImageUrl(), profileImage);
