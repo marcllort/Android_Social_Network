@@ -170,7 +170,7 @@ public class MainActivity extends Activity implements InvitationCallBack {
     public void onGetAllInvitations(Invitation[] invitations) {
         this.invitationsArr =new ArrayList<>(Arrays.asList(invitations));
 
-       // arrayAdapter = new CustomArrayAdapter(this, R.layout.item, invitationsArr);                // Adaptem el arraylist a el format necessari per les targetes
+        arrayAdapter = new CustomArrayAdapter(this, R.layout.item, invitationsArr);                // Adaptem el arraylist a el format necessari per les targetes
 
         createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
 
