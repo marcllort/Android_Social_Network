@@ -73,8 +73,17 @@ public class SearchActivity extends Activity implements UserCallBack {
                 Toast.makeText(getBaseContext(), names.get(position), Toast.LENGTH_LONG).show();
                 Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
                 //System.out.println("-------- "+ id + "---------" + names.get(position).getDisplayName());
-                MyProfile user = (MyProfile) adapter.getItem(position);
-                profileIntent.putExtra("login", user.getId());
+                String  user = (String) adapter.getItem(position);
+                for (int i = 0; i<users.size(); i++){
+                    System.out.println("AAA");
+                    if(user.equals(users.get(i).getDisplayName())){
+                        System.out.println(users.get(i).getDisplayName() + "NOM " +user);
+                        profileIntent.putExtra("login", users.get(i).getId());
+                        break;
+                    }
+                }
+
+
                 startActivity(profileIntent);
             }
         });
