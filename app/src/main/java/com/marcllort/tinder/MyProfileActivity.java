@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -45,6 +46,7 @@ import java.util.Locale;
 public class MyProfileActivity extends AppCompatActivity implements ProfileCallBack {
 
     private FloatingActionButton saveButton;
+    private MyProfile myProfile;
     private ImageView profileImage;
     private EditText et_location;
     private EditText bio;
@@ -54,7 +56,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
     private LocationManager locationManager;
     private String image;
     private LocationListener listener;
-    private boolean bioChanged = false, interestsChanged = false, nameChanged = false;
+    private boolean bioChanged = false, interestsChanged = false, nameChanged = false, imageChanged = false;
     private boolean actualized = false;
 
 
@@ -130,7 +132,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         configure_button();
         setData();
 
-        System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
+
 
         bio.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,7 +148,6 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
             @Override
             public void afterTextChanged(Editable s) {
                 bioChanged = true;
-
             }
         });
 
@@ -214,6 +215,9 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
                 try {
                     bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
                     Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+                    profileImage.setImageBitmap(resizedBitmap);
+                    imageChanged = true;
+                    //myProfile.setPicture("changed");
                     image = convertBitmapToString(resizedBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -225,22 +229,21 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
     void setData() {
         if (!actualized) {
             RestAPIManager.getInstance().getMyProfile(this);
-
-
         }
     }
 
     @Override
     public synchronized void onGetProfile(MyProfile myProfile) {
 
-        MyProfile profile = myProfile;
+        this.myProfile = myProfile;
 
-        bio.setText(profile.getAboutMe());
-        interests.setText(profile.getFilterPreferences());
-        name.setText(profile.getDisplayName());
-        System.out.println(profile.getPicture());
-        fromStringToImage(profile.getPicture());
+        bio.setText(this.myProfile.getAboutMe());
+        interests.setText(this.myProfile.getFilterPreferences());
+        name.setText(this.myProfile.getDisplayName());
 
+        if (this.myProfile.getPicture() != null) {
+            fromStringToImage(this.myProfile.getPicture());
+        }
 
         nameChanged = false;
         bioChanged = false;
@@ -259,7 +262,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {           //enviar los nuevos datos al backend
-                System.out.println(bioChanged + " " + nameChanged + " " + interestsChanged);
+
                 attemptSaveProfile();
             }
         });
@@ -296,7 +299,7 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
         et_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //   locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
+                locationManager.requestLocationUpdates("gps", 2000, 0, listener);       // Podem canviar el temps de update
 
 
             }
@@ -304,44 +307,58 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
     }
 
     public void attemptSaveProfile() {
-        if (!bioChanged && !nameChanged && !interestsChanged) {
+        if (!bioChanged && !nameChanged && !interestsChanged && !imageChanged) {
             Toast.makeText(getBaseContext(), "No changes found", Toast.LENGTH_LONG).show();
             Intent profileIntent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(profileIntent);
         } else {
-            MyProfile newProfile = new MyProfile(bio.getText().toString(), interests.getText().toString(), name.getText().toString());
-            RestAPIManager.getInstance().updateProfile(newProfile, this);
+            if(myProfile.getPicture() != null || imageChanged) {
+                image = fromImageToBase64();
+                myProfile.setPicture(image);
+            } else {
+               myProfile.setPicture(null);
+            }
+            myProfile.setAboutMe(bio.getText().toString());
+            myProfile.setDisplayName(name.getText().toString());
+            myProfile.setFilterPreferences(interests.getText().toString());
+            RestAPIManager.getInstance().updateProfile(myProfile, this);
         }
 
     }
 
     @Override
     public synchronized void onUpdateProfile(MyProfile newProfile) {
-        MyProfile profile = newProfile;
-
-        bio.setText(profile.getAboutMe());
-        interests.setText(profile.getFilterPreferences());
-        name.setText(profile.getDisplayName());
-
-
 
         Toast.makeText(getBaseContext(), "Profile Updated!", Toast.LENGTH_LONG).show();
         Intent profileIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(profileIntent);
 
-        bioChanged = false;
-        interestsChanged = false;
-        nameChanged = false;
-
     }
 
 
     private String fromImageToBase64() {
+        /*
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.profileImage);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         String image = convertBitmapToString(bitmap);
-        return image;
+        return image;*/
+        BitmapDrawable drawable = (BitmapDrawable) profileImage.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        String encodedImage = encodeToBase64(bitmap, Bitmap.CompressFormat.JPEG, 100);
+
+       /* Bitmap bitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+        image = convertBitmapToString(resizedBitmap);*/
+
+        return encodedImage;
+    }
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
     }
 
     private void fromStringToImage(String encodedImage) {

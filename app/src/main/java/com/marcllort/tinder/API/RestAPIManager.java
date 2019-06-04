@@ -109,6 +109,8 @@ public class RestAPIManager {
     }
 
 
+
+
     public synchronized void getMyProfile(final ProfileCallBack profileCallBack) {
 
         Call<MyProfile> call = restApiService.getMyProfile("Bearer " + userToken.getIdToken());

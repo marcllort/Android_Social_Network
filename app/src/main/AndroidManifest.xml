@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".RegisterActivity"/>
         <activity android:name=".MyProfileActivity" />
         <activity android:name=".ProfileCreateActivity" />
         <activity android:name=".MatchesActivity" />
