@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.marcllort.tinder.API.CreateProfileCallBack;
 import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.Model.MyProfile;
@@ -236,19 +237,26 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
     @Override
     public synchronized void onGetProfile(MyProfile myProfile) {
 
-        this.myProfile = myProfile;
-
-        bio.setText(this.myProfile.getAboutMe());
-        interests.setText(this.myProfile.getFilterPreferences());
-        name.setText(this.myProfile.getDisplayName());
-
-        if (this.myProfile.getPicture() != null) {
-            fromStringToImage(this.myProfile.getPicture());
+        if(myProfile.getBirthDate() == null) {
+            Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
+            startActivity(profileIntent);
         }
+        else {
 
-        nameChanged = false;
-        bioChanged = false;
-        interestsChanged = false;
+            this.myProfile = myProfile;
+
+            bio.setText(this.myProfile.getAboutMe());
+            interests.setText(this.myProfile.getFilterPreferences());
+            name.setText(this.myProfile.getDisplayName());
+
+            if (this.myProfile.getPicture() != null) {
+                fromStringToImage(this.myProfile.getPicture());
+            }
+
+            nameChanged = false;
+            bioChanged = false;
+            interestsChanged = false;
+        }
 
     }
 

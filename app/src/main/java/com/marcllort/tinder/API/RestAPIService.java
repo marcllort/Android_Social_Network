@@ -69,7 +69,10 @@ public interface RestAPIService {
     @PUT("/api/invite/{id}/state/{state}")
     Call<Invitation> changeInviteState(@Path("id")int id, @Path("state")boolean state, @Header("Authorization") String token);
 
-    @PUT("api/invitations")
+    @PUT("/api/invitations")
     Call<Invitation> updateInvitation(@Body Invitation invitation, @Header("Authorization") String token);
+
+
+
 
 }

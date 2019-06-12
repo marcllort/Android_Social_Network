@@ -80,6 +80,8 @@ public class MyProfile implements Serializable {
     @Expose
     private Integer weight;
 
+    public MyProfile() {}
+
     public MyProfile(String aboutMe, String filterPreferences, String displayName) { this.aboutMe = aboutMe; this.filterPreferences = filterPreferences; this.displayName = displayName;}
     public MyProfile(String displayName, Gender gender, String birthday) { this.gender = gender; this.birthDate = birthday; this.displayName = displayName;}
 

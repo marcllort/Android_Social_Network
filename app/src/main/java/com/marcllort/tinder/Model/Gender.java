@@ -41,4 +41,6 @@ public class Gender {
         this.users = users;
     }
 
+    public Gender(int id, String type) { this.id = id; this.type = type; }
+
 }

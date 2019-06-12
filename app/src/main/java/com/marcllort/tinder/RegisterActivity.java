@@ -10,10 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.marcllort.tinder.API.LoginCallBack;
 import com.marcllort.tinder.API.RegisterCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
+import com.marcllort.tinder.API.UserToken;
 
-public class RegisterActivity extends Activity implements RegisterCallBack {
+public class RegisterActivity extends Activity implements RegisterCallBack{
 
     private TextInputEditText textUser;
     private TextInputEditText textMail;
@@ -48,8 +50,7 @@ public class RegisterActivity extends Activity implements RegisterCallBack {
                     // Implemetan el register AQUI
                     RestAPIManager.getInstance().register(username, email, password, RegisterActivity.this);
 
-                    Intent profileIntent = new Intent(getApplicationContext(), ProfileCreateActivity.class);
-                    startActivity(profileIntent);
+
                 }
             }
 
@@ -103,11 +104,16 @@ public class RegisterActivity extends Activity implements RegisterCallBack {
 
     @Override
     public void onRegisterSuccess() {
-
+        System.out.println("hola");
+        Intent profileIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(profileIntent);
+       // RestAPIManager.getInstance().getUserToken(txtLogin.getText().toString(), textPassword.getText().toString(), this);
     }
+
+
 
     @Override
     public void onFailure(Throwable t) {
-
+        System.out.println("fallo");
     }
 }
