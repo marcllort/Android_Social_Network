@@ -6,6 +6,7 @@ import com.marcllort.tinder.Model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,7 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestAPIManager {
 
-    private static final String BASE_URL = "http://android3.byted.xyz/";
+    private static final String BASE_URL = "http://51.77.150.95:8080";
+            //"http://android3.byted.xyz/";
     private static RestAPIManager ourInstance;
     private Retrofit retrofit;
     private RestAPIService restApiService;
@@ -175,6 +177,8 @@ public class RestAPIManager {
         });
     }
 
+
+
     public synchronized void getUser(final UserProfileCallBack userprofileCallBack, int login) {
 
         Call<MyProfile> call = restApiService.getUser(login, "Bearer " + userToken.getIdToken());
@@ -217,13 +221,39 @@ public class RestAPIManager {
         });
     }
 
-    public synchronized void getAllInvitations(final InvitationCallBack invitationCallBack) {
-        Call<Invitation[]> call = restApiService.getPendingInvites("Bearer " + userToken.getIdToken(), new HashMap<String, String>());
+    public synchronized void getPendingInvites(final InvitationCallBack invitationCallBack) {
+        Call<ArrayList<Invitation>> call = restApiService.getPendingInvites("Bearer " + userToken.getIdToken());
 
-        call.enqueue(new Callback<Invitation[]>() {
+        call.enqueue(new Callback<ArrayList<Invitation>>() {
             @Override
-            public void onResponse(Call<Invitation[]> call, Response<Invitation[]> response) {
+            public void onResponse(Call<ArrayList<Invitation>> call, Response<ArrayList<Invitation>> response) {
                 if (response.isSuccessful()) {
+
+                    invitationCallBack.onGetPendingInvites(response.body());
+
+                }
+                else {
+                    invitationCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Invitation>> call, Throwable t) {
+                invitationCallBack.onFailure(t);
+            }
+        });
+    }
+
+
+
+    public synchronized void getAllInvitations(final InvitationCallBack invitationCallBack) {
+        Call<List<Invitation>> call = restApiService.getAllInvitations("Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<List<Invitation>>() {
+            @Override
+            public void onResponse(Call<List<Invitation>> call, Response<List<Invitation>> response) {
+                if (response.isSuccessful()) {
+                    System.out.println(response.body().size() + " size invitations");
                     invitationCallBack.onGetAllInvitations(response.body());
                 } else {
                     invitationCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
@@ -231,7 +261,7 @@ public class RestAPIManager {
             }
 
             @Override
-            public void onFailure(Call<Invitation[]> call, Throwable t) {
+            public void onFailure(Call<List<Invitation>> call, Throwable t) {
                 invitationCallBack.onFailure(t);
             }
         });
@@ -319,6 +349,56 @@ public class RestAPIManager {
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
                 messageCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void changeInviteState(int id, boolean state, final InvitationCallBack invitationCallBack) {
+
+        Call<Invitation> call = restApiService.changeInviteState(id, state, "Bearer " + userToken.getIdToken());
+        System.out.println(call.request());
+
+        call.enqueue(new Callback<Invitation>() {
+            @Override
+            public void onResponse(Call<Invitation> call, Response<Invitation> response) {
+                System.out.println(response.body());
+                if (response.isSuccessful()) {
+
+                    invitationCallBack.onChangeState();
+                }
+                else {
+                    invitationCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Invitation> call, Throwable t) {
+                invitationCallBack.onFailure(t);
+            }
+        });
+    }
+
+
+    public synchronized void updateInvitation(final Invitation invitation, final InvitationCallBack invitationCallBack) {
+        final Invitation newInvitation =  invitation;
+        Call<Invitation> call = restApiService.updateInvitation(invitation,"Bearer " + userToken.getIdToken());
+        System.out.println(call.request());
+
+        call.enqueue(new Callback<Invitation>() {
+            @Override
+            public void onResponse(Call<Invitation> call, Response<Invitation> response) {
+                System.out.println(response.body());
+                if (response.isSuccessful()) {
+                    invitationCallBack.onUpdateInvitation(newInvitation);
+                }
+                else {
+                    invitationCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Invitation> call, Throwable t) {
+                invitationCallBack.onFailure(t);
             }
         });
     }

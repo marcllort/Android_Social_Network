@@ -10,6 +10,7 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="password_hint">Password</string>
     <string name="repassword_hint">Confirm password</string>
+    <string name="acceptUser">Accept</string>
 
     <string name="confirm_hint">Confirm Password</string>
     <string name="already_registered_text">Already have an account?</string>
@@ -42,6 +43,7 @@
 
     <string name="message">Type something!</string>
     <string name="send_label">Send</string>
+    <string name="hola_tet">hola tet</string>
 
 
 </resources>

@@ -4,33 +4,157 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+
 import com.marcllort.tinder.API.InvitationCallBack;
+import com.marcllort.tinder.API.ProfileCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.Model.CustomArrayAdapter;
 import com.marcllort.tinder.Model.Invitation;
+import com.marcllort.tinder.Model.MyProfile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 
-public class MainActivity extends Activity implements InvitationCallBack {
+public class MainActivity extends Activity implements InvitationCallBack, ProfileCallBack {
 
-    private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
-    private ArrayList<Invitation> invitationsArr;
-    private CustomArrayAdapter arrayAdapter;                                                              // Adaptador de infromació a targetes
+    private ImageButton profileBtn;
+    private ImageButton matchesBtn;
+    private ImageButton btn_main;
+    private CustomArrayAdapter adapter;
+    private  ListView invitationsList;
+    public  ArrayList<Invitation> pendingInvitations;
+    public   Invitation invitationAux;
+    private MyProfile myProfile;
+    private int position;
+
+
+    public List<Invitation> getPending() { return pendingInvitations;}
+    public void deleteInvitation(int position) { pendingInvitations.remove(position);}
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        configButtons();
+
+        pendingInvitations = new ArrayList<>();
+        invitationsList = findViewById(R.id.invitations_list);
+        RestAPIManager.getInstance().getMyProfile(this);
+        invitationAux = null;
+    }
+
+
+
+    private void configButtons() {
+
+        profileBtn = findViewById(R.id.btn_profile);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(), MyProfileActivity.class);
+                startActivity(profileIntent);
+            }
+        });
+
+        matchesBtn = findViewById(R.id.btn_matches);
+        matchesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent matchesIntent = new Intent(getApplicationContext(), MatchesActivity.class);
+                startActivity(matchesIntent);
+            }
+        });
+        btn_main = findViewById(R.id.btn_main);
+        btn_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent matchesIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(matchesIntent);
+            }
+        });
+
+    }
+
+    //API
+    @Override
+    public void onGetPendingInvites(ArrayList<Invitation> invitationsList) {
+
+
+    }
+
+    @Override
+    public void onGetAllInvitations(List<Invitation> invitations) {
+
+
+        System.out.println(invitations.size());
+        pendingInvitations = new ArrayList<>();
+        for(Invitation inv: invitations) {
+            if(inv.getReceived().getDisplayName().equals(myProfile.getDisplayName()) && inv.getAccepted() == false) {
+                System.out.println(inv.getSent().getDisplayName() + " " + inv.getId());
+                pendingInvitations.add(inv);
+            }
+        }
+        invitationsList = (ListView) findViewById(R.id.invitations_list);
+        adapter = new CustomArrayAdapter(this);
+        invitationsList.setAdapter(adapter);
+
+    }
+
+    public void handleAccepted(int position) {
+        this.position = position;
+        Invitation invitation = pendingInvitations.get(position);
+        invitation.setAccepted(true);
+        RestAPIManager.getInstance().updateInvitation(invitation,  this);
+
+    }
+
+    @Override
+    public void onChangeState() {
+
+
+    }
+
+    @Override
+    public void onUpdateInvitation(Invitation invitation) {
+
+        RestAPIManager.getInstance().getAllInvitations(this);
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        System.out.println("fallo");
+    }
+
+
+    @Override
+    public void onGetProfile(MyProfile profile) {
+        myProfile = profile;
+
+       RestAPIManager.getInstance().getAllInvitations(this);
+    }
+
+    @Override
+    public void onUpdateProfile(MyProfile myProfile) {}
+
+    static void makeToast(Context ctx, String s) {
+        Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
+    }
+
+
+  /*  private ArrayList<String> data;                                                                         // Informació a mostrar a les targetes
     private SwipeFlingAdapterView flingContainer;
     private ImageButton leftBtn;
     private ImageButton rightBtn;
     private ImageButton profileBtn;
     private ImageButton matchesBtn;
     private ImageButton btn_main;
-    private int i;
+
 
 
     @Override
@@ -101,6 +225,7 @@ public class MainActivity extends Activity implements InvitationCallBack {
 
         });                 // Listeners per quan fem algun tipus de swipe
 
+
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {          // Listener per quan clickem la targeta
@@ -161,15 +286,13 @@ public class MainActivity extends Activity implements InvitationCallBack {
 
 
     @Override
-    public void onGetPendingInvites(Invitation[] invitations) {
+    public void onGetPendingInvites(ArrayList<Invitation> invitations) {
 
     }
 
     @Override
-    public void onGetAllInvitations(Invitation[] invitations) {
-        this.invitationsArr =new ArrayList<>(Arrays.asList(invitations));
+    public void onGetAllInvitations(ArrayList<Invitation> invitations) {
 
-        //arrayAdapter = new CustomArrayAdapter(this, R.layout.item, invitationsArr);                // Adaptem el arraylist a el format necessari per les targetes
 
         createCards();                                                                                      // Creem les targetes, posem els seus listeners de fer swipe, click...
 
@@ -179,5 +302,5 @@ public class MainActivity extends Activity implements InvitationCallBack {
     @Override
     public void onFailure(Throwable t) {
 
-    }
+    }*/
 }

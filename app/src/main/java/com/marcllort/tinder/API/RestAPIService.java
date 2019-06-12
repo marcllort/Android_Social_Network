@@ -8,10 +8,12 @@ import com.marcllort.tinder.Model.User;
 import com.marcllort.tinder.Model.UserData;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -46,10 +48,11 @@ public interface RestAPIService {
     Call<ArrayList<MyProfile>> getUsers(@Header("Authorization") String token);
 
     @GET("/api/pending-invites")
-    Call<Invitation[]> getPendingInvites(@Header("Authorization") String token, @QueryMap Map<String, String> options);
+    Call<ArrayList<Invitation>> getPendingInvites(@Header("Authorization") String token);
 
     @GET("/api/invitations")
-    Call<Invitation[]> getAllInvitations (@Header("Authorization") String token, @QueryMap Map<String, String> options);
+    Call<List<Invitation>> getAllInvitations (@Header("Authorization") String token);
+
 
     @POST("/api/invite/{id}")
     Call<Invitation> inviteUser(@Path("id")int id, @Header("Authorization") String token);
@@ -62,5 +65,11 @@ public interface RestAPIService {
 
     @PUT("/api/direct-messages")
     Call<Message> sendMessage(@Body Message message, @Header("Authorization") String token);
+
+    @PUT("/api/invite/{id}/state/{state}")
+    Call<Invitation> changeInviteState(@Path("id")int id, @Path("state")boolean state, @Header("Authorization") String token);
+
+    @PUT("api/invitations")
+    Call<Invitation> updateInvitation(@Body Invitation invitation, @Header("Authorization") String token);
 
 }

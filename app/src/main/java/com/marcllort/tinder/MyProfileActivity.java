@@ -207,8 +207,9 @@ public class MyProfileActivity extends AppCompatActivity implements ProfileCallB
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data != null && requestCode == 0) {
-            if(resultCode == RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == 0) {
+            if (resultCode == RESULT_OK) {
                 resultUri = data.getData();
                 Bitmap bitmap;
 
