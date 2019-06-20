@@ -44,6 +44,10 @@ public interface RestAPIService {
     @GET("/api/profiles/{login}")
     Call<MyProfile> getUser(@Path("login")int login, @Header("Authorization") String token);
 
+    @GET("/api/users/{login}")
+    Call<User> getUserr(@Path("login")String login, @Header("Authorization") String token);
+
+
     @GET("/api/profiles")
     Call<ArrayList<MyProfile>> getUsers(@Header("Authorization") String token);
 

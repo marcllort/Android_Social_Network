@@ -25,15 +25,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.marcllort.tinder.API.InviteCallBack;
 import com.marcllort.tinder.API.RestAPIManager;
 import com.marcllort.tinder.API.UserProfileCallBack;
+import com.marcllort.tinder.API.UserrCallBack;
 import com.marcllort.tinder.Model.Invitation;
 import com.marcllort.tinder.Model.MyProfile;
+import com.marcllort.tinder.Model.User;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.LOCATION_SERVICE;
 
-public class ProfileActivity extends AppCompatActivity implements UserProfileCallBack , InviteCallBack {
+
+public class ProfileActivity extends AppCompatActivity implements UserProfileCallBack , InviteCallBack , UserrCallBack {
 
     private FloatingActionButton saveButton;
     private ImageView profileImage;
@@ -48,7 +52,8 @@ public class ProfileActivity extends AppCompatActivity implements UserProfileCal
     private LocationListener listener;
     private boolean bioChanged = false, interestsChanged = false, nameChanged = false;
     private boolean actualized = false;
-    int id;
+    int id, idU;
+
     com.marcllort.tinder.Model.Location location;
 
     MyProfile user;
@@ -69,8 +74,8 @@ public class ProfileActivity extends AppCompatActivity implements UserProfileCal
         btn_invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RestAPIManager.getInstance().inviteUser(ProfileActivity.this, user.getId());
-                finish();
+                RestAPIManager.getInstance().getUserr(ProfileActivity.this, user.getDisplayName());
+
             }
         });
 
@@ -185,6 +190,13 @@ public class ProfileActivity extends AppCompatActivity implements UserProfileCal
     public void onGetInvitation(Invitation invitation) {
         Toast.makeText(ProfileActivity.this, "Invitation sent", Toast.LENGTH_SHORT).show();
         System.out.println("Invitacio enviada");
+    }
+
+    @Override
+    public void onGetUser(User users) {
+        idU = users.getId();
+        RestAPIManager.getInstance().inviteUser(ProfileActivity.this, idU);
+        finish();
     }
 
     @Override

@@ -199,6 +199,27 @@ public class RestAPIManager {
         });
     }
 
+    public synchronized void getUserr(final UserrCallBack userprofileCallBack, String login) {
+
+        Call<User> call = restApiService.getUserr(login, "Bearer " + userToken.getIdToken());
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    userprofileCallBack.onGetUser(response.body());
+                } else {
+                    userprofileCallBack.onFailure(new Throwable("ERROR " + response.code() + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                userprofileCallBack.onFailure(t);
+            }
+        });
+    }
+
     public synchronized void getUsers(final UserCallBack userCallBack) {
 
         Call<ArrayList<MyProfile>> call = restApiService.getUsers("Bearer " + userToken.getIdToken());
@@ -275,6 +296,8 @@ public class RestAPIManager {
                 if (response.isSuccessful()) {
                     inviteCallBack.onGetInvitation(response.body());
                 } else {
+                    System.out.println(response.toString());
+                    System.out.println(response.body());
                     inviteCallBack.onFailure((new Throwable("ERROR " + response.code() + ", " + response.raw().message())));
                 }
             }
