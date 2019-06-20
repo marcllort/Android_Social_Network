@@ -39,7 +39,7 @@ public class ChatActivity extends AppCompatActivity implements MessageCallback {
     private Toolbar mToolbar;
     private String user;
     private int userid, myid = 3;
-    private int nextidmessage;
+    private int nextidmessage=500;
     private User myUser, usersend;
     private MyProfile profile, destprofile;
     private List<Message> messageList;
@@ -205,13 +205,16 @@ public class ChatActivity extends AppCompatActivity implements MessageCallback {
         String messageText = mChatBox.getText().toString();
 
         if (!messageText.isEmpty()) {
-            RestAPIManager.getInstance().sendMessage(new Message(messageText, profile, destprofile, nextidmessage), this);
-            //messageList.add(new Message(messageText, null));
+            RestAPIManager.getInstance().sendMessage(new Message(messageText, profile, destprofile, (nextidmessage+500)), this);
+            System.out.println("ssss "+(nextidmessage+300));
+            messageList.add(new Message(messageText, profile, destprofile, nextidmessage));
+            mMessageAdapter.notifyDataSetChanged();
         }
 
         mChatBox.setText(null);
-        mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
-
+        if(messageList.size()> 10) {
+            mMessageRecycler.smoothScrollToPosition(messageList.size() - 1);
+        }
     }
 
     private List<Message> getChatData() {
@@ -247,26 +250,15 @@ public class ChatActivity extends AppCompatActivity implements MessageCallback {
 
     @Override
     public void onSendMessage() {
+        System.out.println("ENVIAT-----------");
         getChatMessages();
     }
 
     @Override
     public void onFailure(Throwable t) {
         System.out.println(t.getLocalizedMessage());
-        new AlertDialog.Builder(this)
-                .setTitle("Users not found")
-                .setMessage(t.getMessage())
-
-
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Continue with delete operation
-                    }
-                })
-
-                .setNegativeButton(android.R.string.no, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        System.out.println(t.getMessage());
+        System.out.println("NO ENVIAT");
     }
 
     @Override

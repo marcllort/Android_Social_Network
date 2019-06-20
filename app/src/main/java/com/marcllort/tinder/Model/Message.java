@@ -39,10 +39,10 @@ public class Message {
 
 
     public Message(String messagee, MyProfile senderr, MyProfile reciverr, int idd) {
-        id = idd+1;
+        id = 458+1;
         message = messagee;
         sender = senderr;
-        createdDate = "2019-05-21T18:56:00Z";
+        createdDate = "2019-06-20T10:48:47.255Z";
         url = "";
         picture = "";
         pictureContentType = null;
