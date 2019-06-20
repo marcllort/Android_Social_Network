@@ -54,8 +54,8 @@ public interface RestAPIService {
     Call<List<Invitation>> getAllInvitations (@Header("Authorization") String token);
 
 
-    @POST("/api/invite/{id}")
-    Call<Invitation> inviteUser(@Path("id")int id, @Header("Authorization") String token);
+    @POST("/api/invite/{userId}")
+    Call<Invitation> inviteUser(@Path("userId")int userId, @Header("Authorization") String token);
 
     @GET("/api/my-friends")
     Call<ArrayList<MyProfile>> getConnections(@Header("Authorization") String token);

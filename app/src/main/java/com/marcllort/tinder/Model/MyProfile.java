@@ -36,7 +36,7 @@ public class MyProfile implements Serializable {
     private Gender gender;
     @SerializedName("height")
     @Expose
-    private Integer height;
+    private float height;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -78,7 +78,7 @@ public class MyProfile implements Serializable {
     private User user;
     @SerializedName("weight")
     @Expose
-    private Integer weight;
+    private float weight;
 
     public MyProfile() {}
 
@@ -151,7 +151,7 @@ public class MyProfile implements Serializable {
         this.gender = gender;
     }
 
-    public Integer getHeight() {
+    public float getHeight() {
         return height;
     }
 
@@ -263,11 +263,11 @@ public class MyProfile implements Serializable {
         this.user = user;
     }
 
-    public Integer getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 
