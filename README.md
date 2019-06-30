@@ -10,4 +10,3 @@ The app asks for GPS permission, and later it translates de position to the city
 <img src="https://github.com/marcllort/Android_Social_Network/blob/master/Images/Screenshot_1561882418.png" width="250">  <img src="https://github.com/marcllort/Android_Social_Network/blob/master/Images/Screenshot_1561882790.png" width="250">
 <img src="https://github.com/marcllort/Android_Social_Network/blob/master/Images/Screenshot_1561882690.png" width="250">  <img src="https://github.com/marcllort/Android_Social_Network/blob/master/Images/Screenshot_1561882960.png" width="250">
 <img src="https://github.com/marcllort/Android_Social_Network/blob/master/Images/Screenshot_1561882715.png" width="250">  <img src="https://github.com/marcllort/Android_Social_Network/blob/master/Images/Screenshot_1561882952.png" width="250">
-
